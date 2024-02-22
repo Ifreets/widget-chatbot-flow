@@ -1,0 +1,60 @@
+// Màu của thumb
+$color-thumb: #c4c3c3;
+// Màu khi kéo thumb
+$color-thumb-active: #888;
+
+// custom lại scrolbar chiều ngang
+.scrollbar-horizontal {
+    // Ẩn scroll bar mặc định
+    &::-webkit-scrollbar {
+        // Độ rộng của scroll bar
+        height: 6px; 
+        // Màu nền của track
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-track {
+        // Bo góc
+        border-radius: 6px; 
+    }
+
+    &::-webkit-scrollbar-thumb {
+        // Màu của thumb
+        background-color: $color-thumb; 
+        // Bo góc
+        border-radius: 6px; 
+    }
+
+    &::-webkit-scrollbar-thumb:active {
+        // Màu khi kéo thumb
+        background-color: $color-thumb-active;
+    }
+}
+
+// custom lại scrollbar chiều dọc
+.scrollbar-vertical {
+    // Ẩn scroll bar mặc định
+    &::-webkit-scrollbar {
+        // Độ rộng của scroll bar
+        width: 6px; 
+        // Màu nền của track
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-track {
+        // Bo góc
+        border-radius: 6px; 
+    }
+
+    &::-webkit-scrollbar-thumb {
+        // Màu của thumb
+        background-color: $color-thumb; 
+        // Bo góc
+        border-radius: 6px; 
+    }
+
+    &::-webkit-scrollbar-thumb:active {
+        // Màu khi kéo thumb
+        background-color: $color-thumb-active; 
+    }
+}

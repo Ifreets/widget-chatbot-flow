@@ -1,0 +1,67 @@
+<template>
+    <div class="w-full h-full flex items-center justify-center">
+        <div class="min-w-[500px] p-6 bg-white border border-gray-200 rounded-lg shadow">
+            <div class="flex items-center">
+                <img src="@/assets/icons/logo.svg" class="w-5 h-5" />
+                <div class="font-semibold ml-2">
+                    {{ $t('v1.common.title') }}
+                </div>
+            </div>
+            <div class="text-2xl font-bold mt-2">
+                {{ $t('v1.view.oauth.title') }}
+            </div>
+            <div class="flex justify-center">
+                <img src="@/assets/imgs/oauth.svg" class="w-[100px] my-10" />
+            </div>
+            <div class="text-sm font-medium text-slate-500 text-center">
+                {{ $t('v1.view.oauth.guild') }}
+            </div>
+            <button @click="oauthBbh"
+                class="text-white bg-blue-700 hover:brightness-90 font-medium rounded-lg text-sm px-5 py-2.5 me-2 focus:outline-none mt-2 w-full">
+                {{ $t('v1.view.oauth.active') }}
+            </button>
+        </div>
+    </div>
+</template>
+<script setup lang="ts">
+import { flow, toggle_loading } from '@/service/helper/async'
+import Swal from 'sweetalert2'
+import { useI18n } from 'vue-i18n'
+
+import type { CbError } from '@/service/interface'
+
+const $t = useI18n().t
+
+/**kết nối widget với bbh */
+function oauthBbh() {
+    flow([
+        // * thiết lập kết nối
+        (cb: CbError) => $bbh_widget.connect_widget_to_page_chatbox('', (e, r) => {
+            if (e) return cb(e)
+
+            cb()
+        }),
+        // * tắt loading
+        (cb: CbError) => {
+            toggle_loading(false)
+
+            cb()
+        },
+        // * thông báo thành công
+        (cb: CbError) => Swal
+            .fire({
+                title: $t('v1.view.oauth.success.title'),
+                text: $t('v1.view.oauth.success.description'),
+                icon: 'success'
+            })
+            .then(() => cb()),
+        // * tắt popup
+        (cb: CbError) => {
+            window.close()
+
+            cb()
+        }
+    ], undefined, true)
+}
+</script>
+<style scoped lang="scss"></style>
