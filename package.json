@@ -1,5 +1,5 @@
 {
-  "name": "buddha-view",
+  "name": "widget-chatbot-flow-v2",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite --mode dev --open",
