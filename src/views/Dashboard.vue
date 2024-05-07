@@ -10,7 +10,16 @@
                     :placeholder="$t('v1.common.search_placeholder')">
             </div>
             <div class="mt-2">
-                <VueCard @click="sendFlow(flow)" v-for="flow of list_flow"
+                <div v-if="is_over_time" class="text-xs text-center">
+                    <div>
+                        {{ $t('v1.view.dashboard.overtime') }}
+                    </div>
+                    <a href="https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+                        target="_blank" class="text-blue-500">
+                        {{ $t('v1.view.dashboard.view_policy') }}
+                    </a>
+                </div>
+                <VueCard v-else @click="sendFlow(flow)" v-for="flow of list_flow"
                     class="w-full flex items-center p-2 px-3 cursor-pointer text-slate-700 hover:text-orange-500 h-[38px] mt-2">
                     <div class="w-[calc(100%_-_20px)] text-sm truncate mr-2">
                         {{ flow.flow_name }}
@@ -47,9 +56,14 @@ const search = ref('')
 const current_page_id = ref()
 /**danh sách kịch bản */
 const list_flow = ref<FlowInfo[]>([])
+/**có quá 24h không */
+const is_over_time = ref(false)
 
 // khi thay đổi conversation_info thì tìm kiếm lại kịch bản
 watch(() => commonStore.conversation_info, () => {
+    // kiểm tra xem có quá 24h không
+    checkOverTime()
+
     // nếu vẫn là page cũ thì thôi
     if (
         current_page_id.value &&
@@ -59,11 +73,34 @@ watch(() => commonStore.conversation_info, () => {
     // lưu lại id page hiện tại mới
     current_page_id.value = commonStore.conversation_info?.public_profile?.fb_page_id
 
+    // tìm kiếm lại kịch bản
     searchFlow()
 })
 // lắng nghe tìm kiếm kịch bản
 watch(() => search.value, debounce(() => searchFlow(), 300))
 
+/**tính xem có quá 24h không */
+function checkOverTime() {
+    /**mốc thời gian hiện tại */
+    const NOW = Date.now()
+    /**thời gian tin nhắn cuối cùng được gửi */
+    const LAST_MESS_TIME = commonStore.conversation_info?.conversation_message?.last_message_time || 0
+    /**khoảng thời gian */
+    const DURATION = NOW - LAST_MESS_TIME
+    /**24 giờ */
+    const HOUR_24 = 1000 * 60 * 60 * 24
+
+    if (DURATION > HOUR_24) {
+        // gắn cờ quá 24h
+        is_over_time.value = true
+
+        // dừng tiến trình
+        return
+    }
+
+    // bỏ gắn cờ quá 24h
+    is_over_time.value = false
+}
 /**tìm kiếm danh sách kịch bản */
 function searchFlow() {
     flow([

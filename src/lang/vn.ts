@@ -20,7 +20,9 @@ const source: Language = {
                 title: 'Hãy tắt các tiện ích chặn quảng cáo bạn đang sử dụng đối với trang này, để có thể sử dụng một cách bình thường',
             },
             dashboard: {
-                send_success: 'Đã gửi kịch bản'
+                send_success: 'Đã gửi kịch bản',
+                overtime: 'Chatbot chỉ gửi được kịch bản đến người dùng trong 24h',
+                view_policy: 'Xem chính sách FB'
             },
             oauth: {
                 active: 'Kết nối ứng dụng',
