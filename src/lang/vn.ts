@@ -6,7 +6,7 @@ const source: Language = {
         common: {
             title: 'Chatbot Bot Bán Hàng',
             loading: 'Đang tải dữ liệu ...',
-            search_placeholder: 'Tìm kiếm kịch bản',
+            search_placeholder: 'Gửi kịch bản đến {name}',
         },
         view: {
             error: {

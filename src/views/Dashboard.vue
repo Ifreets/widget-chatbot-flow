@@ -6,8 +6,13 @@
                     <SearchIcon class="w-4 h-4 text-gray-500" />
                 </div>
                 <input v-model="search"
-                    class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 outline-orange-500"
-                    :placeholder="$t('v1.common.search_placeholder')">
+                    class="block w-full p-2 ps-10 pe-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 outline-orange-500"
+                    :placeholder="$t('v1.common.search_placeholder', { name: commonStore.conversation_info?.public_profile?.client_name })">
+                <div class="absolute inset-y-0 end-0 flex items-center pointer-events-none pr-1">
+                    <ClientAvatar class="rounded-lg" :client_id="commonStore.conversation_info?.public_profile?.fb_client_id"
+                        :page_id="commonStore.conversation_info?.public_profile?.fb_page_id"
+                        :staff_id="commonStore.conversation_info?.public_profile?.current_staff_id" size="30" />
+                </div>
             </div>
             <div class="mt-2">
                 <div v-if="is_over_time" class="text-xs text-center">
@@ -38,6 +43,9 @@ import { flow } from '@/service/helper/async'
 import { read_flow, send_flow } from '@/service/api/chatbot'
 import { ref } from 'vue'
 import { watch } from 'vue'
+import { debounce } from 'lodash'
+
+import ClientAvatar from '@/components/Avatar/ClientAvatar.vue'
 
 import SearchIcon from '@/components/Icons/SearchIcon.vue'
 import SendIcon from '@/components/Icons/SendIcon.vue'
@@ -46,7 +54,6 @@ import VueCard from '@/components/Flowbite/VueCard.vue'
 import Loading from '@/components/Loading.vue'
 
 import type { CbError, FlowInfo } from '@/service/interface'
-import { debounce } from 'lodash'
 
 const commonStore = useCommonStore()
 
@@ -119,6 +126,13 @@ function searchFlow() {
 }
 /**gửi kịch bản cho khách hàng */
 function sendFlow(flow: FlowInfo) {
+    /**
+     * lấy id của client hiện tại
+     * - tránh lỗi đang chạy thì client_id bị đổi do người dùng chọn khách hàng 
+     * khác
+     */
+    const CLIENT_ID = commonStore.conversation_info?.public_profile?.fb_client_id
+
     // chặn khi không có id hoặc đang xử lý
     if (!flow.flow_id || flow.status) return
 
@@ -127,7 +141,7 @@ function sendFlow(flow: FlowInfo) {
 
     // gửi kịch bản
     send_flow({
-        client_id: commonStore.conversation_info?.public_profile?.fb_client_id,
+        client_id: CLIENT_ID,
         flow_id: flow.flow_id,
     }, (e, r) => {
         // đánh dấu xử lý xong
