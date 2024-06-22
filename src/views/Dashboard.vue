@@ -6,7 +6,7 @@
                     <SearchIcon class="w-4 h-4 text-gray-500" />
                 </div>
                 <input v-model="search"
-                    class="block w-full p-2 ps-10 pe-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 outline-orange-500"
+                    class="block w-full p-2 ps-10 pe-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:border-orange-500 outline-none"
                     :placeholder="$t('v1.common.search_placeholder', { name: commonStore.conversation_info?.public_profile?.client_name })">
                 <div class="absolute inset-y-0 end-0 flex items-center pointer-events-none pr-1">
                     <ClientAvatar class="rounded-lg" :client_id="commonStore.conversation_info?.public_profile?.fb_client_id"
