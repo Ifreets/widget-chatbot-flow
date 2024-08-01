@@ -7,7 +7,7 @@ import type { Env } from '@/service/interface'
 const ENV: Env = {
     bbh_widget: {
         is_debug: false,
-        chatbox_secret_key: '3e8a30dac73b43fbb6f255c0dd12035e',
+        chatbox_secret_key: 'b057d99e40a748518c73cf9a5d36ea17',
         type_config: 'CRM',
         brand_name: 'BBH',
     },
