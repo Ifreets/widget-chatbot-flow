@@ -2,7 +2,7 @@
   "name": "widget-chatbot-flow-v2",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite --mode dev --open",
+    "dev": "vite --mode dev --open --host",
     "staging": "vite --mode staging --open",
     "prod": "vite --mode prod --open",
     "build-dev": "run-p type-check build-only-dev",
