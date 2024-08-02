@@ -1,20 +1,20 @@
 <template>
     <div class="flex justify-center items-center w-screen h-screen bg-slate-100">
-        <div class="bg-white w-screen h-screen md:w-[400px] md:h-[300px] p-2">
-            <div class="relative">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+        <div class="bg-white w-screen h-screen md:w-[400px] md:h-[300px] pb-2 overflow-auto scrollbar-vertical">
+            <div class="sticky top-0 p-2 bg-white">
+                <div class="absolute inset-y-0 start-2 flex items-center ps-3 pointer-events-none">
                     <SearchIcon class="w-4 h-4 text-gray-500" />
                 </div>
                 <input v-model="search"
                     class="block w-full p-2 ps-10 pe-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:border-orange-500 outline-none"
                     :placeholder="$t('v1.common.search_placeholder', { name: commonStore.conversation_info?.public_profile?.client_name })">
-                <div class="absolute inset-y-0 end-0 flex items-center pointer-events-none pr-1">
+                <div class="absolute inset-y-0 end-2 flex items-center pointer-events-none pr-1">
                     <ClientAvatar class="rounded-lg" :client_id="commonStore.conversation_info?.public_profile?.fb_client_id"
                         :page_id="commonStore.conversation_info?.public_profile?.fb_page_id"
                         :staff_id="commonStore.conversation_info?.public_profile?.current_staff_id" size="30" />
                 </div>
             </div>
-            <div class="mt-2">
+            <div class="px-2">
                 <div v-if="is_over_time" class="text-xs text-center">
                     <div>
                         {{ $t('v1.view.dashboard.overtime') }}
@@ -25,7 +25,7 @@
                     </a>
                 </div>
                 <VueCard v-else @click="sendFlow(flow)" v-for="flow of list_flow"
-                    class="w-full flex items-center p-2 px-3 cursor-pointer text-slate-700 hover:text-orange-500 h-[38px] mt-2">
+                    class="w-full flex items-center p-2 px-3 cursor-pointer text-slate-700 hover:text-orange-500 h-[38px] first-of-type:mt-0 mt-2">
                     <div class="w-[calc(100%_-_20px)] text-sm truncate mr-2">
                         {{ flow.flow_name }}
                     </div>
@@ -114,7 +114,7 @@ function searchFlow() {
         // * đọc danh sách kịch bản
         (cb: CbError) => read_flow({
             search: search.value,
-            limit: 5,
+            limit: 20,
             select: 'flow_name flow_id'
         }, (e, r) => {
             if (e) return cb(e)
