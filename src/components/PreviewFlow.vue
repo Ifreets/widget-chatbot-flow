@@ -1,5 +1,5 @@
 <template>
-  <ul class="p-2 border rounded-md mt-1 bg-blue-50 text-xs flex flex-col gap-1">
+  <ul class="p-2 border rounded-md mt-1 bg-blue-50 text-xs flex flex-col gap-1 ml-8">
     <li v-for="(action, index) of flow_list_action">
       <p class="font-medium text-slate-800">
         {{ index + 1 }}.

@@ -25,28 +25,41 @@
                     </a>
                 </div>
                 <template v-else v-for="flow of list_flow">
-                    <VueCard
-                        @click="sendFlow(flow)" 
-                        class="w-full group flex items-center p-2 px-3 cursor-pointer text-slate-700 hover:text-orange-500 h-[38px] first-of-type:mt-0 mt-2"
-                        :class="{
-                            '!bg-blue-50': flow.is_preview
-                        }"
+                    <div
+                        class="w-full group flex items-center first-of-type:mt-0 mt-2 gap-2"
                     >
-                        <div class="w-[calc(100%_-_20px)] text-black font-medium text-sm truncate mr-2">
-                            {{ flow.flow_name }}
-                        </div>
-                        <DocumentMagnifyingGlassIcon 
-                            @click.stop="previewFlow(flow)"
-                            class="size-4 mr-2 group-hover:block hidden" 
+                        <div 
+                            class="p-1 border rounded-full cursor-pointer"
                             :class="{
-                                'text-blue-500 !block': flow.is_preview,
-                                'text-slate-500': !flow.is_preview
+                                'border-slate-800 group-hover:bg-slate-300': !flow.is_preview,
+                                'border-blue-700 bg-blue-700': flow.is_preview
                             }"
-                        />
-                        <SendIcon v-if="!flow.status" class="w-4 h-4 flex-shrink-0" />
-                        <Loading v-if="flow.status === 'PROCESS'" type="MINI" />
-                        <CheckIcon v-if="flow.status === 'DONE'" class="w-4 h-4 text-green-500 flex-shrink-0" />
-                    </VueCard>
+                        >
+                            <DocumentMagnifyingGlassIcon 
+                                @click.stop="previewFlow(flow)"
+                                class="size-3.5" 
+                                :class="{
+                                    'text-slate-800': !flow.is_preview,
+                                    'text-white': flow.is_preview
+                                }"
+                            />
+                        </div>
+                        <VueCard
+                            @click="sendFlow(flow)" 
+                            class="w-full min-w-0 flex items-center p-2 px-3 cursor-pointer text-black hover:text-orange-500 h-[38px] first-of-type:mt-0"
+                        >
+                            <!-- :class="{
+                                '!bg-blue-50': flow.is_preview
+                            }" -->
+                            <div class="w-[calc(100%_-_20px)] font-medium text-sm truncate mr-2">
+                                {{ flow.flow_name }}
+                            </div>
+                            
+                            <SendIcon v-if="!flow.status" class="w-4 h-4 flex-shrink-0" />
+                            <Loading v-if="flow.status === 'PROCESS'" type="MINI" />
+                            <CheckIcon v-if="flow.status === 'DONE'" class="w-4 h-4 text-green-500 flex-shrink-0" />
+                        </VueCard>
+                    </div>
                     <PreviewFlow 
                         v-if="flow.is_preview"
                         :flow_list_action="flow.flow_list_action"
