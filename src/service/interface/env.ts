@@ -20,6 +20,8 @@ export interface Env {
     host: {
         /**url server chatbot v2 */
         chatbot: string
+        /**url server chatbot v3 */
+        chatbot_v3: string
     }
     /**host của link ảnh */
     img_host: string
