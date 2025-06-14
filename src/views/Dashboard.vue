@@ -26,10 +26,10 @@
                 </div>
                 <template v-else v-for="flow of list_flow">
                     <div
-                        class="w-full group flex items-center first-of-type:mt-0 mt-2 gap-2"
+                        class="w-full flex items-center first-of-type:mt-0 mt-2 gap-2"
                     >
                         <div 
-                            class="p-1 border rounded-full cursor-pointer"
+                            class="p-1 border group rounded-full cursor-pointer"
                             :class="{
                                 'border-slate-800 group-hover:bg-slate-300': !flow.is_preview,
                                 'border-blue-700 bg-blue-700': flow.is_preview
