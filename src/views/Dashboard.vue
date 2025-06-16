@@ -134,6 +134,12 @@ watch(() => search.value, debounce(() => searchFlow(), 300))
 
 /**tính xem có quá 24h không */
 function checkOverTime() {
+	// nếu không phải fb thì thôi
+	if (
+		commonStore.conversation_info?.conversation_message?.platform_type !== 
+		'FACEBOOK'
+	) return
+
     /**mốc thời gian hiện tại */
     const NOW = Date.now()
     /**thời gian tin nhắn cuối cùng được gửi */
