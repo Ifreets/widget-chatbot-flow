@@ -155,9 +155,19 @@ const source: Language = {
                     guild: 'Nhập vào nội dung câu hỏi sẽ gửi cho khách hàng',
                     receive_field: 'Tên biến lưu trữ dữ liệu kết quả'
                 }
-            }
-        }
+            },
+        },
     },
+    'Tìm kiếm': 'Tìm kiếm',
+    'Chuỗi đang chạy': 'Chuỗi đang chạy',
+    'Dừng': 'Dừng',
+    'Kịch bản': 'Kịch bản',
+    'Toàn bộ': 'Toàn bộ',
+    'Quay lại': 'Quay lại',
+    'Gửi': 'Gửi',
+    'Xác nhận dừng chuỗi': 'Xác nhận dừng chuỗi',
+    'Hủy': 'Hủy',
+    'trang': 'trang',
 }
 
 export default source
