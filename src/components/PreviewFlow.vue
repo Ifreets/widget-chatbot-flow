@@ -1,5 +1,5 @@
 <template>
-  <ul class="p-2 border rounded-md mt-1 bg-blue-50 text-xs flex flex-col gap-1 ml-8">
+  <ul class="p-2 rounded-md bg-blue-50 text-xs flex flex-col gap-1">
     <li v-for="(action, index) of flow_list_action">
       <p class="font-medium text-slate-800">
         {{ index + 1 }}.
@@ -60,7 +60,7 @@
         </template>
         <span v-if="action?.action_is_prompt" class="ml-1">[AI]</span>
       </p>
-      <p class="truncate text-slate-500 pl-3">
+      <p class="break-words whitespace-normal text-slate-500 pl-3">
         <template v-if="action?.action_type === 'SEND_MESSAGE'">
           <template v-if="action?.action_sub_type?.includes('TEXT')">
             <template v-if="action?.action_text">

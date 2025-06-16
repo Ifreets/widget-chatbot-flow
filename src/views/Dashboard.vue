@@ -1,90 +1,102 @@
 <template>
-  <main class="flex justify-center items-center w-screen h-screen bg-slate-100 text-sm">
+  <main
+    class="flex justify-center items-center w-screen h-screen bg-slate-100 text-sm"
+  >
     <article
-      class="bg-white w-screen h-screen md:w-[400px] md:h-[300px] overflow-auto scrollbar-vertical"
+      class="bg-white w-screen h-screen md:w-[400px] md:h-[300px] flex flex-col overflow-auto scrollbar-vertical"
     >
       <!-- danh sách kịch bản đang gửi -->
-      <section class="px-2 pt-1">
-				<p class="text-slate-700 font-medium text-xs flex gap-1 items-center pb-1">
-					<ClockIcon class="size-4" />
-					Chuỗi đang chạy
-				</p>
+      <section v-if="false" class="px-2 pt-1">
+        <p
+          class="text-slate-700 font-medium text-xs flex gap-1 items-center pb-1"
+        >
+          <ClockIcon class="size-4" />
+          Chuỗi đang chạy
+        </p>
         <ul class="flex flex-col gap-2">
-					<template v-for="i in 3">
-          <li
-						class="flex gap-2 font-medium"
-						v-if="i === 1"
-					>
-            <div class="flex flex-col bg-green-100 rounded-lg flex-grow">
-							<div class="sticky top-0 bg-white">
-								<div class="px-3 pt-2 flex gap-3 items-center bg-green-100 rounded-t-lg">
-									<p class="text-green-600 font-semibold flex-grow">
-										Chuỗi 1
-									</p>
-									<p class="flex gap-1 items-center text-xs text-green-700">
-										<ClockIcon class="size-4" />
-										18:32 - 16/06
-									</p>
-									<ChevronDownIcon class="size-5 text-green-900" />
-								</div>
-							</div>
-							<div class="pb-2 px-3">
-								dhdhd <br>
-								dhdhdhd <br>
-								djdjdjdj <br>
-								djdjdjdjdjd <br>
-								djdjdjdjd <br>
-								dhdhdhd
-							</div>
-						</div>
-            <button class="sticky top-0 rounded h-fit bg-green-700 flex gap-1 p-2 text-white">
-              Dừng
-              <PauseCircleIcon class="size-5" />
-            </button>
-          </li>
-					</template>
+          <template v-for="i in 3">
+            <FlowItem background_color="bg-green-100">
+              <template #title>
+                <p class="text-green-600 font-semibold flex-grow">Chuỗi 1</p>
+                <p class="flex gap-1 items-center text-xs text-green-700">
+                  <ClockIcon class="size-4" />
+                  18:32 - 16/06
+                </p>
+              </template>
+              <template #dropdown-icon>
+                <ChevronDownIcon class="size-5 text-green-900 cursor-pointer" />
+              </template>
+              <template #content>
+                <div class="pb-2 px-3">
+                  dhdhd <br />
+                  dhdhdhd <br />
+                  djdjdjdj <br />
+                  djdjdjdjdjd <br />
+                  djdjdjdjd <br />
+                  dhdhdhd
+                </div>
+              </template>
+              <template #button>
+                <button
+                  class="rounded h-fit bg-green-700 flex gap-1 p-2 text-white"
+                >
+                  Dừng
+                  <PauseCircleIcon class="size-5" />
+                </button>
+              </template>
+            </FlowItem>
+          </template>
         </ul>
       </section>
+
       <!-- tìm kiếm -->
-      <section class="flex justify-between gap-3 group pt-3 p-2">
-				<p class="flex items-center gap-1 text-slate-700 font-medium text-xs flex-shrink-0 group-focus-within:hidden">
-					<ListBulletIcon class="size-4" />
-					{{ $t('Kịch bản') }}
-				</p>
+      <section
+        class="flex justify-between gap-3 group pt-3 p-2 sticky top-0 z-10 bg-white"
+      >
+        <p
+          class="flex items-center gap-1 text-slate-700 font-medium text-xs flex-shrink-0 group-focus-within:hidden"
+        >
+          <ListBulletIcon class="size-4" />
+          {{ $t('Kịch bản') }}
+        </p>
         <div class="focus-within:w-full w-36 relative">
-					<div
-          class="absolute inset-y-0 start-0.5 flex items-center pointer-events-none ps-2"
-        >
-          <SearchIcon class="w-4 h-4 text-slate-500" />
-        </div>
-        <input
-          v-model="search"
-          class="text-xs truncate bg-slate-200 placeholder:text-slate-500 block w-full py-1.5 px-8 text-gray-900 border border-gray-300 rounded-full outline-none"
-          :placeholder="
-            $t('Tìm kiếm', {
-              name: commonStore.conversation_info?.public_profile?.client_name,
-            })
-          "
-        />
-        <div
-          class="absolute inset-y-0 end-0.5 flex items-center pointer-events-none"
-        >
-          <ClientAvatar
-            class="rounded-full"
-            :client_id="
-              commonStore.conversation_info?.public_profile?.fb_client_id
+          <div
+            class="absolute inset-y-0 start-0.5 flex items-center pointer-events-none ps-2"
+          >
+            <SearchIcon class="w-4 h-4 text-slate-500" />
+          </div>
+          <input
+            v-model="search"
+            class="text-xs truncate bg-slate-200 placeholder:text-slate-500 block w-full py-1.5 px-8 text-gray-900 border border-gray-300 rounded-full outline-none"
+            :placeholder="
+              $t('Tìm kiếm', {
+                name: commonStore.conversation_info?.public_profile
+                  ?.client_name,
+              })
             "
-            :page_id="commonStore.conversation_info?.public_profile?.fb_page_id"
-            :staff_id="
-              commonStore.conversation_info?.public_profile?.current_staff_id
-            "
-            size="24"
           />
+          <div
+            class="absolute inset-y-0 end-0.5 flex items-center pointer-events-none"
+          >
+            <ClientAvatar
+              class="rounded-full"
+              :client_id="
+                commonStore.conversation_info?.public_profile?.fb_client_id
+              "
+              :page_id="
+                commonStore.conversation_info?.public_profile?.fb_page_id
+              "
+              :staff_id="
+                commonStore.conversation_info?.public_profile?.current_staff_id
+              "
+              size="24"
+            />
+          </div>
         </div>
-				</div>
       </section>
+
       <!-- danh sách kịch bản -->
-      <section class="px-2 pb-1">
+      <section class="px-2 pb-1 flex-grow">
         <div v-if="is_over_time" class="text-xs text-center">
           <div>
             {{ $t('v1.view.dashboard.overtime') }}
@@ -97,53 +109,111 @@
             {{ $t('v1.view.dashboard.view_policy') }}
           </a>
         </div>
-        <template v-else v-for="flow of list_flow">
-          <div class="w-full flex items-center first-of-type:mt-0 mt-2 gap-2">
-            <div
-              class="p-1 border group rounded-full cursor-pointer"
-              :class="{
-                'border-slate-800 group-hover:bg-slate-300': !flow.is_preview,
-                'border-blue-700 bg-blue-700': flow.is_preview,
-              }"
+        <ul v-else class="flex flex-col gap-3">
+          <template v-for="flow of list_flow">
+            <FlowItem
+              container_class=""
+              position_sticky="top-[50px]"
+              :title_class="`border border-b-0 ${!flow.is_preview && 'pb-0'}`"
+              :showContent="
+                () => {
+                  previewFlow(flow)
+                }
+              "
             >
-              <DocumentMagnifyingGlassIcon
-                @click.stop="previewFlow(flow)"
-                class="size-3.5"
-                :class="{
-                  'text-slate-800': !flow.is_preview,
-                  'text-white': flow.is_preview,
-                }"
-              />
-            </div>
-            <VueCard
-              @click="sendFlow(flow)"
-              class="w-full min-w-0 flex items-center p-2 px-3 cursor-pointer text-black hover:text-orange-500 h-[38px] first-of-type:mt-0"
-            >
-              <!-- :class="{
-                                '!bg-blue-50': flow.is_preview
-                            }" -->
-              <div
-                class="w-[calc(100%_-_20px)] font-medium truncate mr-2"
-              >
-                {{ flow.flow_name }}
-              </div>
+              <template #title>
+                <p class="font-medium flex-grow truncate">
+                  {{ flow.flow_name }}
+                </p>
+              </template>
+              <template #dropdown-icon>
+                <ChevronDownIcon
+                  class="size-5 flex-shrink-0"
+                  :class="{
+                    '-rotate-90': flow.is_preview,
+                  }"
+                />
+              </template>
+              <template #content>
+                <div class="pb-2 px-3 border border-t-transparent rounded-b-lg">
+									<PreviewFlow
+										v-if="flow.is_preview && !loading"
+										:flow_list_action="flow.flow_list_action"
+										:map_sequence="map_sequence"
+										:map_label="map_label"
+									/>
+									<div v-if="flow.is_preview && loading" class="flex justify-center items-center">
+										<LoadingIcon class="w-6 h-6"/>
+									</div>
+                </div>
+              </template>
+              <template #button>
+                <p
+                  v-if="flow.status === 'DONE'"
+                  class="rounded h-fit bg-blue-200 text-blue-700 flex gap-1 p-2 items-center"
+                >
+                  {{ $t('Đã gửi') }}
+                  <CheckCircleIcon class="w-4 h-4 flex-shrink-0" />
+                </p>
+                <button
+                  class="rounded h-fit bg-blue-700 flex gap-1 p-2 text-white items-center"
+                  v-else
+                  @click="sendFlow(flow)"
+                >
+                  Gửi
+                  <LoadingIcon
+                    v-if="flow.status === 'PROCESS'"
+                    class="size-4"
+                  />
+                  <PaperAirplaneIcon v-else class="size-4" />
+                </button>
+              </template>
+            </FlowItem>
+            <!-- <VueCard
+								@click="sendFlow(flow)"
+								class="w-full min-w-0 flex items-center p-2 px-3 cursor-pointer text-black hover:text-orange-500 h-[38px] first-of-type:mt-0"
+							>
+								<div
+									class="w-[calc(100%_-_20px)] font-medium truncate mr-2"
+								>
+									{{ flow.flow_name }}
+								</div>
 
-              <SendIcon v-if="!flow.status" class="w-4 h-4 flex-shrink-0" />
-              <Loading v-if="flow.status === 'PROCESS'" type="MINI" />
-              <CheckIcon
-                v-if="flow.status === 'DONE'"
-                class="w-4 h-4 text-green-500 flex-shrink-0"
-              />
-            </VueCard>
-          </div>
-          <PreviewFlow
-            v-if="flow.is_preview"
-            :flow_list_action="flow.flow_list_action"
-            :map_sequence="map_sequence"
-            :map_label="map_label"
-          />
-        </template>
+								<SendIcon v-if="!flow.status" class="w-4 h-4 flex-shrink-0" />
+								<Loading v-if="flow.status === 'PROCESS'" type="MINI" />
+								<CheckIcon
+									v-if="flow.status === 'DONE'"
+									class="w-4 h-4 text-green-500 flex-shrink-0"
+								/>
+							</VueCard> -->
+          </template>
+					<div 
+						v-if="!list_flow.length && loading" 
+						v-for="i in 4" 
+						class="flex items-center justify-between rounded mb-2 animate-pulse bg-white"
+					>
+							<!-- Left: fake dropdown -->
+							<div class="flex-grow h-9 rounded border p-2">
+								<div class="bg-gray-200 w-full h-full"></div>
+							</div>
+
+							<!-- Right: fake button -->
+							<div class="w-14 h-9 bg-gray-300 rounded ml-2"></div>
+					</div>
+        </ul>
       </section>
+
+			<!-- phân trang -->
+      <Pagnigation 
+				v-model="current_page"
+				:disabled_next="!list_flow.length || list_flow.length < page_size"
+				@update:model-value="searchFlow" 
+				@update:page-size="(value) => {
+					current_page = 1
+					page_size = value
+					searchFlow()
+				}"
+			/>
     </article>
   </main>
 </template>
@@ -160,23 +230,27 @@ import { debounce, keyBy } from 'lodash'
 import { ref, watch } from 'vue'
 
 import ClientAvatar from '@/components/Avatar/ClientAvatar.vue'
-import VueCard from '@/components/Flowbite/VueCard.vue'
-import Loading from '@/components/Loading.vue'
+import FlowItem from '@/components/FlowItem.vue'
+import Pagnigation from '@/components/Pagnigation.vue'
 import PreviewFlow from '@/components/PreviewFlow.vue'
 
-import CheckIcon from '@/components/Icons/CheckIcon.vue'
-import DocumentMagnifyingGlassIcon from '@/components/Icons/DocumentMagnifyingGlassIcon.vue'
+import CheckCircleIcon from '@/components/Icons/CheckCircleIcon.vue'
+import ChevronDownIcon from '@/components/Icons/ChevronDownIcon.vue'
+import ClockIcon from '@/components/Icons/ClockIcon.vue'
+import ListBulletIcon from '@/components/Icons/ListBulletIcon.vue'
+import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
+import PaperAirplaneIcon from '@/components/Icons/PaperAirplaneIcon.vue'
+import PauseCircleIcon from '@/components/Icons/PauseCircleIcon.vue'
 import SearchIcon from '@/components/Icons/SearchIcon.vue'
-import SendIcon from '@/components/Icons/SendIcon.vue'
 
 import type { CbError, FlowInfo, Label, Sequence } from '@/service/interface'
-import PauseCircleIcon from '@/components/Icons/PauseCircleIcon.vue'
-import ClockIcon from '@/components/Icons/ClockIcon.vue'
-import ChevronDownIcon from '@/components/Icons/ChevronDownIcon.vue'
-import ListBulletIcon from '@/components/Icons/ListBulletIcon.vue'
 
 const commonStore = useCommonStore()
 
+/** trang hiện tại */
+const current_page = ref(1)
+/** số bản ghi trên 1 trang */
+const page_size = ref(10)
 /**tìm kiếm kịch bản */
 const search = ref('')
 /**id page hiện tại */
@@ -189,6 +263,8 @@ const is_over_time = ref(false)
 const map_sequence = ref<{ [key: string]: Sequence }>({})
 /** ánh xạ id:dữ liệu của các nhãm */
 const map_label = ref<{ [key: string]: Label }>({})
+
+const loading = ref(false)
 
 // khi thay đổi conversation_info thì tìm kiếm lại kịch bản
 watch(
@@ -222,7 +298,11 @@ watch(
 // lắng nghe tìm kiếm kịch bản
 watch(
   () => search.value,
-  debounce(() => searchFlow(), 300)
+  debounce(() => {
+		current_page.value = 1
+		searchFlow()
+	}
+	, 300)
 )
 
 /**tính xem có quá 24h không */
@@ -250,6 +330,11 @@ function checkOverTime() {
 }
 /**tìm kiếm danh sách kịch bản */
 function searchFlow() {
+	// bật loading
+	loading.value = true
+
+	// xoa danh sách kịch bản
+	list_flow.value = []
   flow(
     [
       // * đọc danh sách kịch bản
@@ -257,19 +342,25 @@ function searchFlow() {
         read_flow(
           {
             search: search.value,
-            limit: 20,
+            limit: page_size.value,
+						skip: (current_page.value - 1) * page_size.value,
             select: 'flow_name flow_id',
           },
           (e, r) => {
+						// tắt loading
+						loading.value = false
+
+						// nếu có lỗi thì thôi
             if (e) return cb(e)
 
+						// gán danh sách kịch bản
             if (r) list_flow.value = r
             cb()
           }
         ),
     ],
     undefined,
-    true
+    false
   )
 }
 /**gửi kịch bản cho khách hàng */
@@ -305,6 +396,8 @@ function sendFlow(flow: FlowInfo) {
 
 /** xem trước kịch bản */
 function previewFlow(data: FlowInfo) {
+	// bật loading
+	loading.value = true
   flow([
     // * Hiển thị thông tin
     (cb: CbError) => {
@@ -331,6 +424,9 @@ function previewFlow(data: FlowInfo) {
           select: '',
         },
         (e, r) => {
+					// tắt loading
+					loading.value = false
+
           // nếu xảy ra lỗi
           if (e) return cb(e)
 

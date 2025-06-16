@@ -165,6 +165,7 @@ const source: Language = {
     'Toàn bộ': 'Toàn bộ',
     'Quay lại': 'Quay lại',
     'Gửi': 'Gửi',
+    'Đã gửi': 'Đã gửi',
     'Xác nhận dừng chuỗi': 'Xác nhận dừng chuỗi',
     'Hủy': 'Hủy',
     'trang': 'trang',
