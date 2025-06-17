@@ -56,6 +56,9 @@ export interface FlowInfo {
   /**kịch bản được gắn dấu sao */
   flow_is_highlight?: boolean
 
+  /** danh sách các thẻ */
+  tags?: any[]
+
   // * các field tự thêm
   /** có đang preview hay không */
   is_preview?: boolean

@@ -149,9 +149,20 @@
               :showContent="() => previewFlow(flow)"
             >
               <template #title>
-                <p class="font-medium flex-grow truncate">
-                  {{ flow.flow_name }}
-                </p>
+                <div class="flex-grow flex flex-col font-medium">
+                  <p class="flex-grow truncate flex gap-1">
+                    <StartIcon v-if="flow.flow_is_highlight" class="size-5 text-yellow-400" />
+                    {{ flow.flow_name }}
+                  </p>
+                  <ul class="flex gap-1">
+                    <li
+                      class="rounded-md text-[10px] leading-3 text-slate-900 bg-slate-100 py-0.5 px-1"
+                      v-for="tag in flow.tags"
+                    >
+                      {{ tag.tag_name }}
+                    </li>
+                  </ul>
+                </div>
               </template>
               <template #dropdown-icon>
                 <ChevronDownIcon
@@ -188,7 +199,7 @@
                 <button
                   class="rounded h-fit bg-blue-700 flex gap-1 p-2 text-white items-center"
                   v-else
-                  @click="sendFlow(flow)"
+                  @click="openModalSendFlow(flow)"
                 >
                   Gửi
                   <LoadingIcon
@@ -234,19 +245,21 @@
 
   <!-- Modal xác nhận dừng chuỗi -->
   <Modal
-    v-model="is_open_modal"
+    v-model="is_open_modal_remove_sequence"
     class_modal="bg-white w-[400px] p-6 text-sm"
     class_header="text-lg font-semibold"
     class_body="pt-3 pb-7"
     class_footer="flex justify-between gap-2 font-medium"
+    @close_modal="closeModalRemoveSequence"
   >
     <template #header>
       {{ $t('Xác nhận dừng chuỗi') }}
     </template>
     <template #body>
-      {{ $t('Xác nhận dừng chuỗi') }} "{{
-        selected_sequence?.sequence?.sequence_name
-      }}"
+      {{ $t('Xác nhận dừng chuỗi') }}
+      <span class="font-semibold">
+        "{{ selected_sequence?.sequence?.sequence_name }}"
+      </span>
     </template>
     <template #footer>
       <button
@@ -260,6 +273,39 @@
         @click="removeSequence"
       >
         {{ $t('Dừng') }}
+      </button>
+    </template>
+  </Modal>
+
+  <!-- Modal xác nhận gửi kịch bản -->
+  <Modal
+    v-model="is_open_modal_send_flow"
+    class_modal="bg-white w-[400px] p-6 text-sm"
+    class_header="text-lg font-semibold"
+    class_body="pt-3 pb-7"
+    class_footer="flex justify-between gap-2 font-medium"
+    @close_modal="closeModalSendFlow"
+  >
+    <template #header>
+      {{ $t('Xác nhận gửi kịch bản') }}
+    </template>
+    <template #body>
+      {{ $t('Xác nhận dừng chuỗi') }}
+      <span class="font-semibold"> "{{ selected_flow?.flow_name }}" </span>
+    </template>
+    <template #footer>
+      <button
+        class="text-slate-500 py-2 px-4 bg-slate-100 rounded-md"
+        @click="closeModalSendFlow"
+      >
+        {{ $t('Huỷ') }}
+      </button>
+      <button
+        class="rounded h-fit bg-blue-700 flex gap-1 p-2 text-white items-center"
+        @click="sendFlow(selected_flow)"
+      >
+        {{ $t('Gửi') }}
+        <PaperAirplaneIcon class="size-4" />
       </button>
     </template>
   </Modal>
@@ -302,6 +348,7 @@ import type {
   MappingClientSequenceInfo,
   Sequence,
 } from '@/service/interface'
+import StartIcon from '@/components/Icons/StartIcon.vue'
 
 const commonStore = useCommonStore()
 
@@ -326,9 +373,13 @@ const list_sequence_by_client = ref<MappingClientSequenceInfo[]>([])
 /** loading dữ liệu kịch bản */
 const loading = ref(false)
 /** đóng/mở modal xác nhận dừng chuỗi */
-const is_open_modal = ref(false)
+const is_open_modal_remove_sequence = ref(false)
 /** dữ liệu của 1 chuỗi được chọn */
 const selected_sequence = ref<MappingClientSequenceInfo | null>(null)
+/** đóng/mở modal xác nhận gửi kịch bản */
+const is_open_modal_send_flow = ref(false)
+/** dữ liệu của 1 kịch bản được chọn */
+const selected_flow = ref<FlowInfo | null>(null)
 
 // khi thay đổi conversation_info thì tìm kiếm lại kịch bản
 watch(
@@ -410,7 +461,7 @@ function searchFlow() {
             search: search.value,
             limit: page_size.value,
             skip: (current_page.value - 1) * page_size.value,
-            select: 'flow_name flow_id',
+            select: '',
           },
           (e, r) => {
             // tắt loading
@@ -430,7 +481,10 @@ function searchFlow() {
   )
 }
 /**gửi kịch bản cho khách hàng */
-function sendFlow(flow: FlowInfo) {
+function sendFlow(flow: FlowInfo | null) {
+  // nếu không có kịch bản thì thôi
+  if (!flow) return
+
   /**
    * lấy id của client hiện tại
    * - tránh lỗi đang chạy thì client_id bị đổi do người dùng chọn khách hàng
@@ -457,8 +511,11 @@ function sendFlow(flow: FlowInfo) {
       // sau 2s thì ẩn đi
       setTimeout(() => (flow.status = undefined), 2000)
 
-			// lấy lại danh sách mới
-			readSequenceByClient()
+      // lấy lại danh sách mới
+      readSequenceByClient()
+
+      // đóng modal
+      closeModalSendFlow()
     }
   )
 }
@@ -578,7 +635,7 @@ function readSequenceByClient(callback?: Function) {
           select: '',
         },
         (e, r) => {
-					callback?.()
+          callback?.()
 
           // nếu có lỗi thì thôi
           if (e) return cb(e)
@@ -610,7 +667,7 @@ function readLabel() {
 /** hàm mở modal xác nhận dừng chuỗi */
 function openModalRemoveSequence(sequence: MappingClientSequenceInfo) {
   // bật modal
-  is_open_modal.value = true
+  is_open_modal_remove_sequence.value = true
 
   // lưu lặp dữ liệu
   selected_sequence.value = sequence
@@ -619,7 +676,7 @@ function openModalRemoveSequence(sequence: MappingClientSequenceInfo) {
 /** hàm đóng modal xác nhận dừng chuỗi */
 function closeModalRemoveSequence() {
   // đóng modal
-  is_open_modal.value = false
+  is_open_modal_remove_sequence.value = false
 
   // xóa dữ liệu chuỗi
   selected_sequence.value = null
@@ -648,18 +705,36 @@ function removeSequence() {
             if (e) return cb(e)
             // nếu thành công thì tắt modal và xóa khỏi mảng
             if (r.code !== 200) return cb()
-						
-						// đóng modal
-						closeModalRemoveSequence()
 
-						// lấy lại danh sách mới
-						readSequenceByClient(cb)
+            // đóng modal
+            closeModalRemoveSequence()
+
+            // lấy lại danh sách mới
+            readSequenceByClient(cb)
           }
         ),
     ],
     undefined,
     true
   )
+}
+
+/** hàm mở modal xác nhận gửi kịch bản */
+function openModalSendFlow(flow: FlowInfo) {
+  // bật modal
+  is_open_modal_send_flow.value = true
+
+  // lưu lặp dữ liệu
+  selected_flow.value = flow
+}
+
+/** hàm đóng modal xác nhận gửi kịch bản */
+function closeModalSendFlow() {
+  // đóng modal
+  is_open_modal_send_flow.value = false
+
+  // xóa dữ liệu kịch bản
+  selected_flow.value = null
 }
 </script>
 <style scoped lang="scss"></style>
