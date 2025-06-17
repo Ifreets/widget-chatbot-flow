@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { formatDistanceToNow } from 'date-fns'
+import { formatDistanceToNow, formatDistanceToNowStrict } from 'date-fns'
 import viLocale from 'date-fns/locale/vi'
 
 /**
@@ -40,14 +40,13 @@ export const nonAccentVn = (input: string) => {
 export const copy = (object: Object) => JSON.parse(JSON.stringify(object))
 
 /**định dạng thời gian về xxx ago */
-export function formatDateAgo(date?: string) {
+export function formatDateAgo(date?: string|number) {
     if (!date) return ''
 
-    return formatDistanceToNow(
+    return formatDistanceToNowStrict(
         new Date(date),
         {
             addSuffix: true,
-            includeSeconds: true,
             locale: viLocale
         }
     )

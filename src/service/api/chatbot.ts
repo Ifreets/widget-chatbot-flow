@@ -14,7 +14,7 @@ export const chatbot = (
         uri: `${$env.host.chatbot}/${path}`,
         method: 'POST',
         headers: {
-            Authorization: $bbh_widget.chatbox_widget_access_token
+            Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNzE3MTEzMDE2NzcxMjMzIiwiZmJfc3RhZmZfaWQiOiIxMjIxMjE3MzA2MzQzMzI0NDIiLCJfaWQiOiI2ODUxMGQ1OWFmMGVlNjYyZWQ3NjI3MjIiLCJpYXQiOjE3NTAxNDIyOTcsImV4cCI6MzE1NTM1MDE0MjI5N30.c4TyKS046cHCw3ZmvcPxIfp5CxdOF8Pu50nyik0XQT8'
         },
         body: {
             page_id: commonStore.conversation_info?.public_profile?.fb_page_id,
@@ -40,7 +40,7 @@ export const chatbot_v3 = (
         uri: `${$env.host.chatbot_v3}/${path}`,
         method: 'POST',
         headers: {
-            Authorization: $bbh_widget.chatbox_widget_access_token
+            Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNzE3MTEzMDE2NzcxMjMzIiwiZmJfc3RhZmZfaWQiOiIxMjIxMjE3MzA2MzQzMzI0NDIiLCJfaWQiOiI2ODUxMGQ1OWFmMGVlNjYyZWQ3NjI3MjIiLCJpYXQiOjE3NTAxNDIyOTcsImV4cCI6MzE1NTM1MDE0MjI5N30.c4TyKS046cHCw3ZmvcPxIfp5CxdOF8Pu50nyik0XQT8'
         },
         body: {
             page_id: commonStore.conversation_info?.public_profile?.fb_page_id,
@@ -73,6 +73,23 @@ export const send_flow = (body: {
 /** lấy danh sách chuỗi */
 export const read_sequence = (body: FindFlowParam, proceed: Cb) => chatbot(
     { path: 'app/sequence/read_sequence', body },
+    proceed
+)
+
+/** lấy các chuỗi sự kiện sắp gửi của khách hàng đó */
+export const read_sequence_by_client = (body: FindFlowParam, proceed: Cb) => chatbot(
+    { path: 'app/sequence/read_mapping_client_sequence', body },
+    proceed
+)
+
+/** dừng chuỗi */
+export const remove_sequence = (body: {
+    sequence_id?: string,
+    client_id?: string,
+    page_id?: string,
+    mapping_client_sequence_id?: string
+}, proceed: Cb) => chatbot(
+    { path: 'app/sequence/delete_mapping_client_sequence_event', body },
     proceed
 )
 
