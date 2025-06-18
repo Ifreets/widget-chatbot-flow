@@ -81,48 +81,92 @@
       </section>
 
       <!-- tìm kiếm -->
-      <section
-        class="flex justify-between gap-3 group pt-3 p-2 sticky top-0 z-10 bg-white"
-      >
-        <p
-          class="flex items-center gap-1 text-slate-700 font-medium text-xs flex-shrink-0 group-focus-within:hidden"
-        >
-          <ListBulletIcon class="size-4" />
-          {{ $t('Kịch bản') }}
-        </p>
-        <div class="focus-within:w-full w-36 relative">
-          <div
-            class="absolute inset-y-0 start-0.5 flex items-center pointer-events-none ps-2"
+      <section class="flex flex-col py-3 px-2 sticky top-0 z-10 bg-white">
+        <div class="flex justify-between gap-3 group">
+          <p
+            v-if="!is_expand_tag"
+            class="flex items-center gap-1 text-slate-700 font-medium text-xs flex-shrink-0 group-focus-within:hidden"
           >
-            <SearchIcon class="w-4 h-4 text-slate-500" />
-          </div>
-          <input
-            v-model="search"
-            class="text-xs truncate bg-slate-200 placeholder:text-slate-500 block w-full py-1.5 px-8 text-gray-900 border border-gray-300 rounded-full outline-none"
-            :placeholder="
-              $t('Tìm kiếm', {
-                name: commonStore.conversation_info?.public_profile
-                  ?.client_name,
-              })
-            "
-          />
-          <div
-            class="absolute inset-y-0 end-0.5 flex items-center pointer-events-none"
+            <ListBulletIcon class="size-4" />
+            {{ $t('Kịch bản') }}
+          </p>
+          <button
+            v-else
+            class="flex gap-1 items-center font-medium text-slate-700"
+            @click="() => (is_expand_tag = false)"
           >
-            <ClientAvatar
-              class="rounded-full"
-              :client_id="
-                commonStore.conversation_info?.public_profile?.fb_client_id
+            <ChevronDownIcon class="size-4 rotate-90" />
+            {{ $t('Quay lại') }}
+          </button>
+          <div class="focus-within:w-full w-36 relative">
+            <div
+              class="absolute inset-y-0 start-0.5 flex items-center pointer-events-none ps-2"
+            >
+              <SearchIcon class="w-4 h-4 text-slate-500" />
+            </div>
+            <input
+              v-model="search"
+              class="text-xs truncate bg-slate-200 placeholder:text-slate-500 block w-full py-1.5 px-8 text-gray-900 border border-gray-300 rounded-full outline-none"
+              :placeholder="
+                $t('Tìm kiếm', {
+                  name: commonStore.conversation_info?.public_profile
+                    ?.client_name,
+                })
               "
-              :page_id="
-                commonStore.conversation_info?.public_profile?.fb_page_id
-              "
-              :staff_id="
-                commonStore.conversation_info?.public_profile?.current_staff_id
-              "
-              size="24"
             />
+            <div
+              class="absolute inset-y-0 end-0.5 flex items-center pointer-events-none"
+            >
+              <ClientAvatar
+                class="rounded-full"
+                :client_id="
+                  commonStore.conversation_info?.public_profile?.fb_client_id
+                "
+                :page_id="
+                  commonStore.conversation_info?.public_profile?.fb_page_id
+                "
+                :staff_id="
+                  commonStore.conversation_info?.public_profile
+                    ?.current_staff_id
+                "
+                size="24"
+              />
+            </div>
           </div>
+        </div>
+        <div class="flex gap-2 pt-2 items-center">
+          <ul
+            id="list-tag"
+            class="flex flex-grow min-w-0 gap-1 font-medium text-xs text-slate-700 flex-wrap"
+            :class="{
+              'h-5 overflow-hidden': !is_expand_tag,
+            }"
+          >
+            <li
+              id="item-tag"
+              v-for="tag in list_tag"
+              class="rounded-md py-0.5 px-2 cursor-pointer hover:brightness-90"
+              :class="{
+                'bg-slate-700 text-white': selected_tag_id?.includes(tag.tag_id || ''),
+                'bg-slate-100 hover:brightness-90': !selected_tag_id?.includes(tag.tag_id || ''),
+              }"
+              @click="selectTag(tag)"
+            >
+              {{ tag.tag_name }}
+            </li>
+          </ul>
+          <button
+            v-if="!is_expand_tag && hidden_tag_count && hidden_tag_count > 0"
+            class="flex-shrink-0 flex items-center gap-1 font-medium text-slate-700 hover:text-blue-700 hover:underline"
+            @click="
+              () => {
+                is_expand_tag = true
+              }
+            "
+          >
+            Toàn bộ
+            <ChevronDoubleRightIcon class="size-4" />
+          </button>
         </div>
       </section>
 
@@ -151,10 +195,13 @@
               <template #title>
                 <div class="flex-grow flex flex-col font-medium">
                   <p class="flex-grow truncate flex gap-1">
-                    <StartIcon v-if="flow.flow_is_highlight" class="size-5 text-yellow-400" />
+                    <StartIcon
+                      v-if="flow.flow_is_highlight"
+                      class="size-5 text-yellow-400"
+                    />
                     {{ flow.flow_name }}
                   </p>
-                  <ul class="flex gap-1">
+                  <ul class="flex gap-1 flex-wrap">
                     <li
                       class="rounded-md text-[10px] leading-3 text-slate-900 bg-slate-100 py-0.5 px-1"
                       v-for="tag in flow.tags"
@@ -201,7 +248,7 @@
                   v-else
                   @click="openModalSendFlow(flow)"
                 >
-                  Gửi
+                  {{ $t('Gửi') }}
                   <LoadingIcon
                     v-if="flow.status === 'PROCESS'"
                     class="size-4"
@@ -290,7 +337,7 @@
       {{ $t('Xác nhận gửi kịch bản') }}
     </template>
     <template #body>
-      {{ $t('Xác nhận dừng chuỗi') }}
+      {{ $t('Xác nhận gửi kịch bản') }}
       <span class="font-semibold"> "{{ selected_flow?.flow_name }}" </span>
     </template>
     <template #footer>
@@ -316,6 +363,7 @@ import {
   read_flow,
   read_sequence,
   read_sequence_by_client,
+  read_tag,
   remove_sequence,
   send_flow,
 } from '@/service/api/chatbot'
@@ -324,15 +372,17 @@ import { formatDateAgo } from '@/service/helper/format'
 import { useCommonStore } from '@/stores'
 import { format, hoursToMilliseconds } from 'date-fns'
 import { debounce, keyBy } from 'lodash'
-import { ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 
 import ClientAvatar from '@/components/Avatar/ClientAvatar.vue'
 import FlowItem from '@/components/FlowItem.vue'
 import Modal from '@/components/Modal.vue'
 import Pagnigation from '@/components/Pagnigation.vue'
 import PreviewFlow from '@/components/PreviewFlow.vue'
+import { CountHiddenItem } from '@/service/helper/CountHiddenItem'
 
 import CheckCircleIcon from '@/components/Icons/CheckCircleIcon.vue'
+import ChevronDoubleRightIcon from '@/components/Icons/ChevronDoubleRightIcon.vue'
 import ChevronDownIcon from '@/components/Icons/ChevronDownIcon.vue'
 import ClockIcon from '@/components/Icons/ClockIcon.vue'
 import ListBulletIcon from '@/components/Icons/ListBulletIcon.vue'
@@ -340,6 +390,7 @@ import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
 import PaperAirplaneIcon from '@/components/Icons/PaperAirplaneIcon.vue'
 import PauseCircleIcon from '@/components/Icons/PauseCircleIcon.vue'
 import SearchIcon from '@/components/Icons/SearchIcon.vue'
+import StartIcon from '@/components/Icons/StartIcon.vue'
 
 import type {
   CbError,
@@ -347,8 +398,10 @@ import type {
   Label,
   MappingClientSequenceInfo,
   Sequence,
+  TagInfo,
 } from '@/service/interface'
-import StartIcon from '@/components/Icons/StartIcon.vue'
+
+const $count_hidden_item = new CountHiddenItem()
 
 const commonStore = useCommonStore()
 
@@ -380,6 +433,15 @@ const selected_sequence = ref<MappingClientSequenceInfo | null>(null)
 const is_open_modal_send_flow = ref(false)
 /** dữ liệu của 1 kịch bản được chọn */
 const selected_flow = ref<FlowInfo | null>(null)
+/** danh sách thẻ */
+const list_tag = ref<TagInfo[]>([])
+/** số lượng thẻ bị ẩn */
+const hidden_tag_count = ref()
+/** xem tất cả các thẻ */
+const is_expand_tag = ref(false)
+/** danh sách tag được chọn */
+const selected_tag_id = ref<string[]>([])
+
 
 // khi thay đổi conversation_info thì tìm kiếm lại kịch bản
 watch(
@@ -408,6 +470,9 @@ watch(
 
     // lấy danh sách nhãn
     readLabel()
+
+    // lấy danh sách thẻ
+    readTag()
 
     // lấy danh sách chuỗi sự kiện sắp gửi của khách hàng
     readSequenceByClient()
@@ -462,6 +527,7 @@ function searchFlow() {
             limit: page_size.value,
             skip: (current_page.value - 1) * page_size.value,
             select: '',
+            flow_list_tag_id: selected_tag_id.value?.length ? selected_tag_id.value : undefined,
           },
           (e, r) => {
             // tắt loading
@@ -664,6 +730,39 @@ function readLabel() {
   ])
 }
 
+/** lấy danh sách thẻ */
+function readTag() {
+  read_tag(
+    {
+      page_id: commonStore.conversation_info?.public_profile?.fb_page_id,
+    },
+    (e, r) => {
+      // nếu có lỗi thì thôi
+      if (e) return console.error(e)
+
+      // nếu không có dữ liệu thì thôi
+      if (!r) return
+
+      // lưu lặp dữ liệu
+      list_tag.value = r
+
+      nextTick(async () => {
+        /** phần tử chứa danh sách thẻ */
+        const LIST_TAG = document.querySelector('#list-tag')
+
+        // nếu không có thì thôi
+        if (!LIST_TAG) return
+
+        // tính toán các phần tử bị ẩn
+        hidden_tag_count.value = await $count_hidden_item.exec(
+          '#item-tag',
+          LIST_TAG
+        )
+      })
+    }
+  )
+}
+
 /** hàm mở modal xác nhận dừng chuỗi */
 function openModalRemoveSequence(sequence: MappingClientSequenceInfo) {
   // bật modal
@@ -735,6 +834,23 @@ function closeModalSendFlow() {
 
   // xóa dữ liệu kịch bản
   selected_flow.value = null
+}
+
+/** hàm chọn thẻ */
+function selectTag(tag: TagInfo) {
+  /** index của thẻ đã chọn trong mảng đã chọn */
+  const INDEX = selected_tag_id.value.findIndex((item) => item === tag.tag_id)
+  // nếu không có thì thêm vào mảng
+  if(INDEX === -1 && tag.tag_id) {
+    selected_tag_id.value = [...selected_tag_id.value, tag.tag_id]
+  } 
+  // nếu có trong mảng rồi thì xóa
+  else {
+    selected_tag_id.value.splice(INDEX, 1)
+  }
+
+  current_page.value = 1
+  searchFlow()
 }
 </script>
 <style scoped lang="scss"></style>

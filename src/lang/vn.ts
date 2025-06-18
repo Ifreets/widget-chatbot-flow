@@ -169,6 +169,8 @@ const source: Language = {
     'Xác nhận dừng chuỗi': 'Xác nhận dừng chuỗi',
     'Hủy': 'Hủy',
     'trang': 'trang',
+    'Thuộc tính': 'Thuộc tính',
+    'Xác nhân gửi kịch bản': 'Xác nhận gửi kịch bản',
 }
 
 export default source

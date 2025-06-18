@@ -31,6 +31,8 @@ export interface FindFlowParam {
   page_id?:string
   /**id khách hàng */
   client_id?:string
+  /** lọc theo tag */
+  flow_list_tag_id?: string[]
 }
 
 /**dữ liệu của một kịch bản */
@@ -57,7 +59,7 @@ export interface FlowInfo {
   flow_is_highlight?: boolean
 
   /** danh sách các thẻ */
-  tags?: any[]
+  tags?: TagInfo[]
 
   // * các field tự thêm
   /** có đang preview hay không */
@@ -323,4 +325,22 @@ export interface AttributeTriggerInfo {
   trigger_value?: string | number | boolean
   /**id của kịch bản muốn kích hoạt */
   trigger_flow_id?: string
+}
+
+/** /dữ liệu của một tag */
+export interface TagInfo {
+  /**id mongo */
+  _id?: any
+  /**id của tag này */
+  tag_id?: string
+  /**id của trang sở hữu tag */
+  page_id?: string
+  /**tên của tag */
+  tag_name?: string
+  /**ghi chú thêm */
+  tag_description?: string
+  /** mã màu color của tag này */
+  tag_color?: string
+  /** tag_id của tag cha */
+  parent_id?: string
 }

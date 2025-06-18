@@ -42,9 +42,9 @@
         @change="emit('update:pageSize', page_size)"
         class="h-9 px-3 border rounded-md appearance-none bg-white pr-9 outline-none cursor-pointer"
       >
-        <option :value="10">10 / trang</option>
-        <option :value="20">20 / trang</option>
-        <option :value="50">50 / trang</option>
+        <option :value="10">10 / {{ $t('trang') }}</option>
+        <option :value="20">20 / {{ $t('trang') }}</option>
+        <option :value="50">50 / {{ $t('trang') }}</option>
       </select>
       <ChevronDownIcon class="size-4 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500" />
     </div>
