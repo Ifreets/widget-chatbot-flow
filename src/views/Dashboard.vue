@@ -6,7 +6,7 @@
       class="bg-white w-screen h-screen md:w-[400px] md:h-[300px] flex flex-col overflow-auto scrollbar-vertical"
     >
       <!-- danh sách kịch bản đang gửi -->
-      <section class="px-2 pt-1" v-if="list_sequence_by_client.length">
+      <section class="px-2 pt-1" v-if="list_sequence_by_client.length && !is_expand_tag">
         <p
           class="text-slate-700 font-medium text-xs flex gap-1 items-center pb-1"
         >
@@ -134,7 +134,10 @@
             </div>
           </div>
         </div>
-        <div class="flex gap-2 pt-2 items-center">
+        <div 
+          v-if="list_tag?.length" 
+          class="flex gap-2 pt-2 items-center"
+        >
           <ul
             id="list-tag"
             class="flex flex-grow min-w-0 gap-1 font-medium text-xs text-slate-700 flex-wrap"
@@ -188,20 +191,20 @@
           <template v-for="flow of list_flow">
             <FlowItem
               container_class=""
-              position_sticky="top-[50px]"
+              position_sticky="top-[54px]"
               :title_class="`border border-b-0 ${!flow.is_preview && 'pb-0'}`"
               :showContent="() => previewFlow(flow)"
             >
               <template #title>
-                <div class="flex-grow flex flex-col font-medium">
-                  <p class="flex-grow truncate flex gap-1">
+                <div class="flex-grow flex flex-col font-medium min-w-0">
+                  <p class="flex-grow flex gap-1">
                     <StartIcon
                       v-if="flow.flow_is_highlight"
                       class="size-5 text-yellow-400"
                     />
-                    {{ flow.flow_name }}
+                    <span class="truncate">{{ flow.flow_name }}</span>
                   </p>
-                  <ul class="flex gap-1 flex-wrap">
+                  <ul v-if="flow.tags?.length" class="flex gap-1 flex-wrap">
                     <li
                       class="rounded-md text-[10px] leading-3 text-slate-900 bg-slate-100 py-0.5 px-1"
                       v-for="tag in flow.tags"

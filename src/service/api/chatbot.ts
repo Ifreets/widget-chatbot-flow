@@ -14,7 +14,7 @@ export const chatbot = (
         uri: `${$env.host.chatbot}/${path}`,
         method: 'POST',
         headers: {
-            Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNzE3MTEzMDE2NzcxMjMzIiwiZmJfc3RhZmZfaWQiOiIxMjIxMjE3MzA2MzQzMzI0NDIiLCJfaWQiOiI2ODUxMGQ1OWFmMGVlNjYyZWQ3NjI3MjIiLCJpYXQiOjE3NTAxNDIyOTcsImV4cCI6MzE1NTM1MDE0MjI5N30.c4TyKS046cHCw3ZmvcPxIfp5CxdOF8Pu50nyik0XQT8'
+            Authorization: $bbh_widget.chatbox_widget_access_token
         },
         body: {
             page_id: commonStore.conversation_info?.public_profile?.fb_page_id,
@@ -40,7 +40,7 @@ export const chatbot_v3 = (
         uri: `${$env.host.chatbot_v3}/${path}`,
         method: 'POST',
         headers: {
-            Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNzE3MTEzMDE2NzcxMjMzIiwiZmJfc3RhZmZfaWQiOiIxMjIxMjE3MzA2MzQzMzI0NDIiLCJfaWQiOiI2ODUxMGQ1OWFmMGVlNjYyZWQ3NjI3MjIiLCJpYXQiOjE3NTAxNDIyOTcsImV4cCI6MzE1NTM1MDE0MjI5N30.c4TyKS046cHCw3ZmvcPxIfp5CxdOF8Pu50nyik0XQT8'
+            Authorization: $bbh_widget.chatbox_widget_access_token
         },
         body: {
             page_id: commonStore.conversation_info?.public_profile?.fb_page_id,
