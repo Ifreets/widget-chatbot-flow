@@ -492,15 +492,20 @@ watch(
 
 /**tính xem có quá 24h không */
 function checkOverTime() {
-  /**mốc thời gian hiện tại */
-  const NOW = Date.now()
-  /**thời gian tin nhắn cuối cùng được gửi */
-  const LAST_MESS_TIME =
-    commonStore.conversation_info?.conversation_message?.last_message_time || 0
-  /**khoảng thời gian */
-  const DURATION = NOW - LAST_MESS_TIME
-  /**24 giờ */
-  const HOUR_24 = 1000 * 60 * 60 * 24
+	// nếu không phải fb thì thôi
+	if (
+		commonStore.conversation_info?.conversation_message?.platform_type !== 
+		'FACEBOOK'
+	) return
+
+    /**mốc thời gian hiện tại */
+    const NOW = Date.now()
+    /**thời gian tin nhắn cuối cùng được gửi */
+    const LAST_MESS_TIME = commonStore.conversation_info?.conversation_message?.last_message_time || 0
+    /**khoảng thời gian */
+    const DURATION = NOW - LAST_MESS_TIME
+    /**24 giờ */
+    const HOUR_24 = 1000 * 60 * 60 * 24
 
   if (DURATION > HOUR_24) {
     // gắn cờ quá 24h
