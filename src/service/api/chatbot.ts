@@ -76,6 +76,29 @@ export const read_sequence = (body: FindFlowParam, proceed: Cb) => chatbot(
     proceed
 )
 
+/** lấy các chuỗi sự kiện sắp gửi của khách hàng đó */
+export const read_sequence_by_client = (body: FindFlowParam, proceed: Cb) => chatbot(
+    { path: 'app/sequence/read_mapping_client_sequence', body },
+    proceed
+)
+
+/** dừng chuỗi */
+export const remove_sequence = (body: {
+    sequence_id?: string,
+    client_id?: string,
+    page_id?: string,
+    mapping_client_sequence_id?: string
+}, proceed: Cb) => chatbot(
+    { path: 'app/sequence/delete_mapping_client_sequence_event', body },
+    proceed
+)
+
+/** lấy danh sách thẻ */
+export const read_tag = (body: FindFlowParam, proceed: Cb) => chatbot(
+    { path: 'app/tag/read_tag', body },
+    proceed
+)
+
 /** lấy danh sách thẻ */
 export const read_all_label = (body: FindFlowParam, proceed: Cb) => chatbot_v3(
     { path: 'app/page/get_one_page_all_label', body },

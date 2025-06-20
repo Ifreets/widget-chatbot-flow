@@ -27,6 +27,12 @@ export interface FindFlowParam {
   search?: string
   /**id kịch bản */
   flow_id?: string
+  /** id của trang hiện tại */
+  page_id?:string
+  /**id khách hàng */
+  client_id?:string
+  /** lọc theo tag */
+  flow_list_tag_id?: string[]
 }
 
 /**dữ liệu của một kịch bản */
@@ -51,6 +57,9 @@ export interface FlowInfo {
   createdAt?: string
   /**kịch bản được gắn dấu sao */
   flow_is_highlight?: boolean
+
+  /** danh sách các thẻ */
+  tags?: TagInfo[]
 
   // * các field tự thêm
   /** có đang preview hay không */
@@ -247,4 +256,91 @@ export interface Label {
 
   /** Thứ tự hiển thị */
   index: number;
+}
+
+/**dữ liệu của bảng trung gian giữa sự kiện chuỗi và khách hàng */
+export interface MappingClientSequenceInfo {
+  _id?:string
+  /**id của chuỗi */
+  sequence_id?: string
+  /**id của khách hàng */
+  client_id?: string
+  // id của trang sở hữu khách hàng này
+  page_id?: string
+  /**mốc thời gian mà sự kiện này được kích hoạt */
+  event_timestamp?: number
+  /**id của kịch bản muốn kich hoạt */
+  event_flow_id?: string,
+  /** dữ liệu của chuỗi */
+  sequence?: Sequence
+  /** dữ liệu kịch bản */
+  flow?: FlowInfo
+  /** dữ liệu thuộc tính */
+  attribute?: AttributeInfo
+  /** loại sự kiện */
+  event_sub_type?: 'FLOW' | 'ATTRIBUTE'
+
+  // * các field tự thêm
+  /** có đang preview hay không */
+  is_preview?: boolean
+}
+
+/**dữ liệu của một thuộc tính */
+export interface AttributeInfo {
+  /**id mongo */
+  _id?: any
+  /**id của thuộc tính */
+  attribute_id?: string
+  /**id của trang sở hữu thuộc tính này */
+  page_id?: string
+  /**tên của thuộc tính */
+  attribute_name?: string
+  /**mô tả của thuộc tính */
+  attribute_description?: string
+  /**kiểu dữ liệu của thuộc tính */
+  attribute_type?: 'STRING' | 'NUMBER' | 'BOOLEAN'
+  /**phạm vi của thuộc tính */
+  attribute_scope?: 'CLIENT' | 'PAGE'
+  /**key của thuộc tính */
+  attribute_key?: string
+  /**giá trị mặc định của thuộc tính */
+  attribute_default_value?: string | number | boolean
+  /**đánh dấu thuộc tính này có được kích hoạt tính năng trigger hay không */
+  attribute_trigger_is_active?: boolean
+  /**danh sách các trigger của thuộc tính này */
+  attribute_list_trigger?: AttributeTriggerInfo[]
+}
+
+/**dữ liệu của một trigger */
+export interface AttributeTriggerInfo {
+  /**trigger sẽ kiểm tra dữ liệu thoả mãn theo cách nào */
+  trigger_condition?:
+    | 'EQUAL'
+    | 'NOT_EQUAL'
+    | 'GREATER_THAN'
+    | 'LESS_THAN'
+    | 'GREATER_THAN_OR_EQUAL'
+    | 'LESS_THAN_OR_EQUAL'
+  /**giá trị của trigger được dùng để so sánh */
+  trigger_value?: string | number | boolean
+  /**id của kịch bản muốn kích hoạt */
+  trigger_flow_id?: string
+}
+
+/** /dữ liệu của một tag */
+export interface TagInfo {
+  /**id mongo */
+  _id?: any
+  /**id của tag này */
+  tag_id?: string
+  /**id của trang sở hữu tag */
+  page_id?: string
+  /**tên của tag */
+  tag_name?: string
+  /**ghi chú thêm */
+  tag_description?: string
+  /** mã màu color của tag này */
+  tag_color?: string
+  /** tag_id của tag cha */
+  parent_id?: string
 }
