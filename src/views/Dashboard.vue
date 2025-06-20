@@ -21,12 +21,12 @@
               :showContent="() => previewSequence(i)"
             >
               <template #title>
-                <p class="text-green-600 font-semibold flex-grow">
+                <p class="text-green-600 font-semibold flex-grow truncate">
                   {{ i.sequence?.sequence_name }}
                 </p>
                 <p
                   v-tooltip.left="'Thời gian gửi'"
-                  class="flex gap-1 items-center text-xs text-green-700"
+                  class="flex gap-1 items-center text-xs text-green-700 flex-shrink-0"
                 >
                   <ClockIcon class="size-4" />
                   <template v-if="i.event_timestamp">
@@ -581,7 +581,7 @@ function sendFlow(flow: FlowInfo | null) {
       setTimeout(() => (flow.status = undefined), 2000)
 
       // lấy lại danh sách mới
-      readSequenceByClient()
+      // readSequenceByClient()
 
       // đóng modal
       closeModalSendFlow()
