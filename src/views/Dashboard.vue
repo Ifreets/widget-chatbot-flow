@@ -452,6 +452,9 @@ watch(
   () => {
     // kiểm tra xem có quá 24h không
     checkOverTime()
+    
+    // lấy danh sách chuỗi sự kiện sắp gửi của khách hàng
+    readSequenceByClient()
 
     // nếu vẫn là page cũ thì thôi
     if (
@@ -476,9 +479,6 @@ watch(
 
     // lấy danh sách thẻ
     readTag()
-
-    // lấy danh sách chuỗi sự kiện sắp gửi của khách hàng
-    readSequenceByClient()
   }
 )
 // lắng nghe tìm kiếm kịch bản
