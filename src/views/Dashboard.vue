@@ -2,7 +2,19 @@
   <main
     class="flex justify-center items-center w-screen h-screen bg-slate-100 text-sm"
   >
-    <article
+    <div v-if="is_over_time" class="text-xs text-center">
+      <div>
+        {{ $t('v1.view.dashboard.overtime') }}
+      </div>
+      <a
+        href="https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+        target="_blank"
+        class="text-blue-500"
+      >
+        {{ $t('v1.view.dashboard.view_policy') }}
+      </a>
+    </div>
+    <article v-else
       class="bg-white w-screen h-screen md:w-[400px] md:h-[300px] flex flex-col overflow-auto scrollbar-vertical"
     >
       <!-- danh sách kịch bản đang gửi -->
@@ -175,19 +187,7 @@
 
       <!-- danh sách kịch bản -->
       <section class="px-2 pb-1 flex-grow">
-        <div v-if="is_over_time" class="text-xs text-center">
-          <div>
-            {{ $t('v1.view.dashboard.overtime') }}
-          </div>
-          <a
-            href="https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
-            target="_blank"
-            class="text-blue-500"
-          >
-            {{ $t('v1.view.dashboard.view_policy') }}
-          </a>
-        </div>
-        <ul v-else class="flex flex-col gap-3">
+        <ul class="flex flex-col gap-3">
           <template v-for="flow of list_flow">
             <FlowItem
               container_class=""
@@ -495,7 +495,7 @@ function checkOverTime() {
 	// nếu không phải fb thì thôi
 	if (
 		commonStore.conversation_info?.conversation_message?.platform_type !== 
-		'FACEBOOK'
+		'FB_MESS'
 	) return
 
     /**mốc thời gian hiện tại */
