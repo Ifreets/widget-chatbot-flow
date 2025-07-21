@@ -17,9 +17,9 @@ importers:
       axios:
         specifier: ^1.6.3
         version: 1.6.3
-      bbh-chatbox-widget:
-        specifier: ^0.1.2
-        version: 0.1.2
+      bbh-chatbox-widget-js-sdk:
+        specifier: 1.0.13
+        version: 1.0.13
       date-fns:
         specifier: 2.30.0
         version: 2.30.0
@@ -28,7 +28,7 @@ importers:
         version: 4.17.21
       pinia:
         specifier: ^2.0.28
-        version: 2.1.7(typescript@4.7.4)(vue@3.3.13)
+        version: 2.1.7(typescript@4.7.4)(vue@3.3.13(typescript@4.7.4))
       postcss:
         specifier: ^8.4.19
         version: 8.4.32
@@ -49,10 +49,10 @@ importers:
         version: 3.3.13(typescript@4.7.4)
       vue-i18n:
         specifier: ^9.2.2
-        version: 9.8.0(vue@3.3.13)
+        version: 9.8.0(vue@3.3.13(typescript@4.7.4))
       vue-router:
         specifier: ^4.1.6
-        version: 4.2.5(vue@3.3.13)
+        version: 4.2.5(vue@3.3.13(typescript@4.7.4))
     devDependencies:
       '@types/async':
         specifier: ^3.2.16
@@ -65,10 +65,10 @@ importers:
         version: 18.19.3
       '@vitejs/plugin-basic-ssl':
         specifier: ^1.0.1
-        version: 1.0.2(vite@4.5.1)
+        version: 1.0.2(vite@4.5.1(@types/node@18.19.3)(sass@1.69.5))
       '@vitejs/plugin-vue':
         specifier: ^4.0.0
-        version: 4.6.0(vite@4.5.1)(vue@3.3.13)
+        version: 4.6.0(vite@4.5.1(@types/node@18.19.3)(sass@1.69.5))(vue@3.3.13(typescript@4.7.4))
       '@vue/tsconfig':
         specifier: ^0.1.3
         version: 0.1.3(@types/node@18.19.3)
@@ -436,8 +436,8 @@ packages:
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
-  bbh-chatbox-widget@0.1.2:
-    resolution: {integrity: sha512-AZYCfrL6se4VfEpDT7tpV6nvoDReUc0B709XF/8XGQoZ793IG6Cq+ipPcw1ukk/5icTxW/a1gSkGGNaLuZtldQ==}
+  bbh-chatbox-widget-js-sdk@1.0.13:
+    resolution: {integrity: sha512-MCZsMLMLbcGxnFJ5dje0Sdd8SVejAFnbJsIVDDlOsm3ecch28Qki3vsXKKc02g8pUVK5DxVz88tp0OazZ6SmUw==}
 
   binary-extensions@2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
@@ -1498,11 +1498,11 @@ snapshots:
     dependencies:
       undici-types: 5.26.5
 
-  '@vitejs/plugin-basic-ssl@1.0.2(vite@4.5.1)':
+  '@vitejs/plugin-basic-ssl@1.0.2(vite@4.5.1(@types/node@18.19.3)(sass@1.69.5))':
     dependencies:
       vite: 4.5.1(@types/node@18.19.3)(sass@1.69.5)
 
-  '@vitejs/plugin-vue@4.6.0(vite@4.5.1)(vue@3.3.13)':
+  '@vitejs/plugin-vue@4.6.0(vite@4.5.1(@types/node@18.19.3)(sass@1.69.5))(vue@3.3.13(typescript@4.7.4))':
     dependencies:
       vite: 4.5.1(@types/node@18.19.3)(sass@1.69.5)
       vue: 3.3.13(typescript@4.7.4)
@@ -1562,8 +1562,9 @@ snapshots:
       minimatch: 9.0.3
       muggle-string: 0.3.1
       path-browserify: 1.0.1
-      typescript: 4.7.4
       vue-template-compiler: 2.7.16
+    optionalDependencies:
+      typescript: 4.7.4
 
   '@vue/reactivity-transform@3.3.13':
     dependencies:
@@ -1588,7 +1589,7 @@ snapshots:
       '@vue/shared': 3.3.13
       csstype: 3.1.3
 
-  '@vue/server-renderer@3.3.13(vue@3.3.13)':
+  '@vue/server-renderer@3.3.13(vue@3.3.13(typescript@4.7.4))':
     dependencies:
       '@vue/compiler-ssr': 3.3.13
       '@vue/shared': 3.3.13
@@ -1597,7 +1598,7 @@ snapshots:
   '@vue/shared@3.3.13': {}
 
   '@vue/tsconfig@0.1.3(@types/node@18.19.3)':
-    dependencies:
+    optionalDependencies:
       '@types/node': 18.19.3
 
   ansi-regex@5.0.1: {}
@@ -1664,7 +1665,7 @@ snapshots:
 
   balanced-match@1.0.2: {}
 
-  bbh-chatbox-widget@0.1.2:
+  bbh-chatbox-widget-js-sdk@1.0.13:
     dependencies:
       axios: 1.6.3
       lodash: 4.17.21
@@ -2225,12 +2226,13 @@ snapshots:
 
   pify@3.0.0: {}
 
-  pinia@2.1.7(typescript@4.7.4)(vue@3.3.13):
+  pinia@2.1.7(typescript@4.7.4)(vue@3.3.13(typescript@4.7.4)):
     dependencies:
       '@vue/devtools-api': 6.5.1
-      typescript: 4.7.4
       vue: 3.3.13(typescript@4.7.4)
-      vue-demi: 0.14.6(vue@3.3.13)
+      vue-demi: 0.14.6(vue@3.3.13(typescript@4.7.4))
+    optionalDependencies:
+      typescript: 4.7.4
 
   pirates@4.0.6: {}
 
@@ -2249,8 +2251,9 @@ snapshots:
   postcss-load-config@4.0.2(postcss@8.4.32):
     dependencies:
       lilconfig: 3.0.0
-      postcss: 8.4.32
       yaml: 2.3.4
+    optionalDependencies:
+      postcss: 8.4.32
 
   postcss-nested@6.0.1(postcss@8.4.32):
     dependencies:
@@ -2556,26 +2559,26 @@ snapshots:
 
   vite@4.5.1(@types/node@18.19.3)(sass@1.69.5):
     dependencies:
-      '@types/node': 18.19.3
       esbuild: 0.18.20
       postcss: 8.4.32
       rollup: 3.29.4
-      sass: 1.69.5
     optionalDependencies:
+      '@types/node': 18.19.3
       fsevents: 2.3.3
+      sass: 1.69.5
 
-  vue-demi@0.14.6(vue@3.3.13):
+  vue-demi@0.14.6(vue@3.3.13(typescript@4.7.4)):
     dependencies:
       vue: 3.3.13(typescript@4.7.4)
 
-  vue-i18n@9.8.0(vue@3.3.13):
+  vue-i18n@9.8.0(vue@3.3.13(typescript@4.7.4)):
     dependencies:
       '@intlify/core-base': 9.8.0
       '@intlify/shared': 9.8.0
       '@vue/devtools-api': 6.5.1
       vue: 3.3.13(typescript@4.7.4)
 
-  vue-router@4.2.5(vue@3.3.13):
+  vue-router@4.2.5(vue@3.3.13(typescript@4.7.4)):
     dependencies:
       '@vue/devtools-api': 6.5.1
       vue: 3.3.13(typescript@4.7.4)
@@ -2597,8 +2600,9 @@ snapshots:
       '@vue/compiler-dom': 3.3.13
       '@vue/compiler-sfc': 3.3.13
       '@vue/runtime-dom': 3.3.13
-      '@vue/server-renderer': 3.3.13(vue@3.3.13)
+      '@vue/server-renderer': 3.3.13(vue@3.3.13(typescript@4.7.4))
       '@vue/shared': 3.3.13
+    optionalDependencies:
       typescript: 4.7.4
 
   which-boxed-primitive@1.0.2:

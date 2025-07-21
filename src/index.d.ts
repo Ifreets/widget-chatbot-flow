@@ -10,8 +10,6 @@ declare global {
     var check_ad_blocker: boolean
     /**gắn cờ đã phát hiện trình chặn quảng cáo */
     var detect_ad_blocker: boolean
-    /**sdk widget bbh */
-    var $bbh_widget: BbhChatboxWidget
 }
 
 export {}

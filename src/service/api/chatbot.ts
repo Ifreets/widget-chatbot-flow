@@ -1,5 +1,6 @@
 import request from '@/service/helper/request'
 import { useCommonStore } from '@/stores'
+import WIDGET from 'bbh-chatbox-widget-js-sdk'
 
 import type { Cb, FindFlowParam, FlowInfo } from '@/service/interface'
 
@@ -14,7 +15,7 @@ export const chatbot = (
         uri: `${$env.host.chatbot}/${path}`,
         method: 'POST',
         headers: {
-            Authorization: $bbh_widget.chatbox_widget_access_token
+            Authorization: WIDGET.access_token
         },
         body: {
             page_id: commonStore.conversation_info?.public_profile?.fb_page_id,
@@ -40,7 +41,7 @@ export const chatbot_v3 = (
         uri: `${$env.host.chatbot_v3}/${path}`,
         method: 'POST',
         headers: {
-            Authorization: $bbh_widget.chatbox_widget_access_token
+            Authorization: WIDGET.access_token
         },
         body: {
             page_id: commonStore.conversation_info?.public_profile?.fb_page_id,

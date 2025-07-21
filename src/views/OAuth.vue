@@ -24,44 +24,34 @@
     </div>
 </template>
 <script setup lang="ts">
-import { flow, toggle_loading } from '@/service/helper/async'
+import { toggle_loading } from '@/service/helper/async'
+import WIDGET from 'bbh-chatbox-widget-js-sdk'
 import Swal from 'sweetalert2'
 import { useI18n } from 'vue-i18n'
-
-import type { CbError } from '@/service/interface'
 
 const $t = useI18n().t
 
 /**kết nối widget với bbh */
-function oauthBbh() {
-    flow([
-        // * thiết lập kết nối
-        (cb: CbError) => $bbh_widget.connect_widget_to_page_chatbox('', (e, r) => {
-            if (e) return cb(e)
-
-            cb()
-        }),
-        // * tắt loading
-        (cb: CbError) => {
-            toggle_loading(false)
-
-            cb()
-        },
-        // * thông báo thành công
-        (cb: CbError) => Swal
-            .fire({
-                title: $t('v1.view.oauth.success.title'),
-                text: $t('v1.view.oauth.success.description'),
-                icon: 'success'
-            })
-            .then(() => cb()),
-        // * tắt popup
-        (cb: CbError) => {
-            window.close()
-
-            cb()
-        }
-    ], undefined, true)
+async function oauthBbh() {
+    try {
+        // bật loading
+        toggle_loading(true)
+        //call api auth widget
+        await WIDGET.oAuth()
+        // thông báo thành công
+        Swal.fire({
+            title: $t('v1.view.oauth.success.title'),
+            text: $t('v1.view.oauth.success.description'),
+            icon: 'success'
+        })
+    } catch (e) {
+        console.log(e);
+    } finally {
+        // tắt loading
+        toggle_loading(false)
+        // đóng widget
+        window.close()
+    }
 }
 </script>
 <style scoped lang="scss"></style>

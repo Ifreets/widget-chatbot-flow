@@ -11,6 +11,8 @@
 //     /** có đang preview hay không */
 //     is_preview?: boolean
 
+import type { CustomerInfo } from "bbh-chatbox-widget-js-sdk"
+
 // }
 
 /**các field đọc dữ liệu dùng chung */
@@ -28,9 +30,9 @@ export interface FindFlowParam {
   /**id kịch bản */
   flow_id?: string
   /** id của trang hiện tại */
-  page_id?:string
+  page_id?: string
   /**id khách hàng */
-  client_id?:string
+  client_id?: string
   /** lọc theo tag */
   flow_list_tag_id?: string[]
 }
@@ -210,13 +212,13 @@ export type AttributeValueType = string | number | boolean
 
 /** dữ liệu chuỗi */
 export interface Sequence {
-	/** id chuỗi */
+  /** id chuỗi */
   sequence_id: string
 
-	/** tên chuỗi sự kiện */
+  /** tên chuỗi sự kiện */
   sequence_name: string
 
-	/** id trong db */
+  /** id trong db */
   _id: string
 }
 
@@ -225,42 +227,42 @@ export interface Sequence {
  */
 export interface Label {
   /** ID duy nhất của nhãn */
-  _id: string;
+  _id: string
 
   /** Loại nhãn */
-  type: string;
+  type: string
 
   /** Màu chữ (hex) */
-  text_color: string;
+  text_color: string
 
   /** Màu nền (hex) */
-  bg_color: string;
+  bg_color: string
 
   /** ID trang Facebook */
-  fb_page_id: string;
+  fb_page_id: string
 
   /** Tên nhãn hiển thị */
-  title: string;
+  title: string
 
   /** Ngày tạo */
-  createdAt: string;
+  createdAt: string
 
   /** Ngày cập nhật */
-  updatedAt: string;
+  updatedAt: string
 
   /** Phiên bản MongoDB */
-  __v: number;
+  __v: number
 
   /** Mô tả nhãn */
-  description: string;
+  description: string
 
   /** Thứ tự hiển thị */
-  index: number;
+  index: number
 }
 
 /**dữ liệu của bảng trung gian giữa sự kiện chuỗi và khách hàng */
 export interface MappingClientSequenceInfo {
-  _id?:string
+  _id?: string
   /**id của chuỗi */
   sequence_id?: string
   /**id của khách hàng */
@@ -270,7 +272,7 @@ export interface MappingClientSequenceInfo {
   /**mốc thời gian mà sự kiện này được kích hoạt */
   event_timestamp?: number
   /**id của kịch bản muốn kich hoạt */
-  event_flow_id?: string,
+  event_flow_id?: string
   /** dữ liệu của chuỗi */
   sequence?: Sequence
   /** dữ liệu kịch bản */
@@ -343,4 +345,21 @@ export interface TagInfo {
   tag_color?: string
   /** tag_id của tag cha */
   parent_id?: string
+}
+
+/** dữ liệu khách hàng giải mã được bố sung thêm field platform_type */
+export interface CustomerInfoExtend extends CustomerInfo {
+  /**thông tin cuộc trò chuyện */
+  conversation_message?: {
+    /**thời gian cuối cùng khách hàng đọc tin nhắn */
+    last_read_message?: string
+    /**thời gian cuối cùng tin nhắn phát sinh */
+    last_message_time: number
+    /**nội dung tin nhắn cuối cùng */
+    last_message?: string
+    /**loại tin nhắn cuối cùng */
+    last_message_type?: 'page' | 'client'
+    /** nền tảng của tin nhắn */
+    platform_type?: string
+  }
 }

@@ -1,15 +1,7 @@
-import type { GetConfigInput } from 'bbh-chatbox-widget/build/interface'
-
 export interface Env {
     bbh_widget: {
-        /**bật kiểm thử */
-        is_debug: boolean
         /**mã bí mật của widget */
         chatbox_secret_key: string
-        /**? */
-        type_config: GetConfigInput['type_config']
-        /**? */
-        brand_name: GetConfigInput['brand_name']
     }
     /**cài đặt cho local */
     local_storage: {
@@ -22,6 +14,8 @@ export interface Env {
         chatbot: string
         /**url server chatbot v3 */
         chatbot_v3: string
+        /** url server của widget sdk */
+        widget_sdk?: Record<'APP' | 'WIDGET' | 'CHATBOT' | 'APP_V2', string>
     }
     /**host của link ảnh */
     img_host: string
