@@ -253,12 +253,10 @@
                   >
                     <li v-for="i in 3" class="flex flex-col gap-1">
                       <div
-                        class="h-4 bg-slate-300 rounded animate-pulse"
-                        :style="`width: ${60 + i * 10}%`"
+                        class="h-4 bg-slate-300 rounded animate-pulse w-3/4"
                       ></div>
                       <div
                         class="h-12 bg-slate-200 rounded animate-pulse ml-3"
-                        :style="`width: ${70 + i * 5}%`"
                       ></div>
                     </li>
                   </ul>
