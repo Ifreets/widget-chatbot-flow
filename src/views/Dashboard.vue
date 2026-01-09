@@ -4,26 +4,30 @@
   >
     <div v-if="is_over_time" class="text-xs text-center">
       <div>
-        {{ $t('v1.view.dashboard.overtime') }}
+        {{ $t("v1.view.dashboard.overtime") }}
       </div>
       <a
         href="https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
         target="_blank"
         class="text-blue-500"
       >
-        {{ $t('v1.view.dashboard.view_policy') }}
+        {{ $t("v1.view.dashboard.view_policy") }}
       </a>
     </div>
-    <article v-else
+    <article
+      v-else
       class="bg-white w-screen h-screen md:w-[400px] md:h-[300px] flex flex-col overflow-auto scrollbar-vertical"
     >
       <!-- danh sách kịch bản đang gửi -->
-      <section class="px-2 pt-1" v-if="list_sequence_by_client.length && !is_expand_tag">
+      <section
+        class="px-2 pt-1"
+        v-if="list_sequence_by_client.length && !is_expand_tag"
+      >
         <p
           class="text-slate-700 font-medium text-xs flex gap-1 items-center pb-1"
         >
           <ClockIcon class="size-4" />
-          {{ $t('Chuỗi đang chạy') }}
+          {{ $t("Chuỗi đang chạy") }}
         </p>
         <ul class="flex flex-col gap-2">
           <template v-for="i in list_sequence_by_client">
@@ -54,7 +58,7 @@
                         i.event_timestamp > Date.now() + hoursToMilliseconds(24)
                       "
                     >
-                      {{ format(i.event_timestamp, 'HH:mm - dd/MM/yyyy') }}
+                      {{ format(i.event_timestamp, "HH:mm - dd/MM/yyyy") }}
                     </span>
                   </template>
                 </p>
@@ -69,10 +73,10 @@
                 <div class="pb-2 px-3 font-medium text-xs text-slate-500">
                   <p v-if="i.is_preview">
                     <span v-if="i.flow">
-                      {{ $t('Kịch bản') }}: {{ i.flow?.flow_name }}
+                      {{ $t("Kịch bản") }}: {{ i.flow?.flow_name }}
                     </span>
                     <span v-if="i.attribute">
-                      {{ $t('Thuộc tính') }}:
+                      {{ $t("Thuộc tính") }}:
                       {{ i.attribute?.attribute_name }}
                     </span>
                   </p>
@@ -83,7 +87,7 @@
                   class="rounded h-fit bg-green-700 flex gap-1 p-2 text-white"
                   @click="openModalRemoveSequence(i)"
                 >
-                  {{ $t('Dừng') }}
+                  {{ $t("Dừng") }}
                   <PauseCircleIcon class="size-5" />
                 </button>
               </template>
@@ -100,7 +104,7 @@
             class="flex items-center gap-1 text-slate-700 font-medium text-xs flex-shrink-0 group-focus-within:hidden"
           >
             <ListBulletIcon class="size-4" />
-            {{ $t('Kịch bản') }}
+            {{ $t("Kịch bản") }}
           </p>
           <button
             v-else
@@ -108,7 +112,7 @@
             @click="() => (is_expand_tag = false)"
           >
             <ChevronDownIcon class="size-4 rotate-90" />
-            {{ $t('Quay lại') }}
+            {{ $t("Quay lại") }}
           </button>
           <div class="focus-within:w-full w-36 relative">
             <div
@@ -146,10 +150,7 @@
             </div>
           </div>
         </div>
-        <div 
-          v-if="list_tag?.length" 
-          class="flex gap-2 pt-2 items-center"
-        >
+        <div v-if="list_tag?.length" class="flex gap-2 pt-2 items-center">
           <ul
             id="list-tag"
             class="flex flex-grow min-w-0 gap-1 font-medium text-xs text-slate-700 flex-wrap"
@@ -162,8 +163,12 @@
               v-for="tag in list_tag"
               class="rounded-md py-0.5 px-2 cursor-pointer hover:brightness-90"
               :class="{
-                'bg-slate-700 text-white': selected_tag_id?.includes(tag.tag_id || ''),
-                'bg-slate-100 hover:brightness-90': !selected_tag_id?.includes(tag.tag_id || ''),
+                'bg-slate-700 text-white': selected_tag_id?.includes(
+                  tag.tag_id || ''
+                ),
+                'bg-slate-100 hover:brightness-90': !selected_tag_id?.includes(
+                  tag.tag_id || ''
+                ),
               }"
               @click="selectTag(tag)"
             >
@@ -175,13 +180,25 @@
             class="flex-shrink-0 flex items-center gap-1 font-medium text-slate-700 hover:text-blue-700 hover:underline"
             @click="
               () => {
-                is_expand_tag = true
+                is_expand_tag = true;
               }
             "
           >
             Toàn bộ
             <ChevronDoubleRightIcon class="size-4" />
           </button>
+        </div>
+        <div v-if="loading_tag" class="flex gap-2 pt-2 items-center">
+          <ul class="flex flex-grow min-w-0 gap-1 flex-wrap">
+            <li
+              class="h-5 bg-slate-200 rounded-md animate-pulse"
+              style="width: 300px"
+            ></li>
+          </ul>
+          <div
+            class="flex-shrink-0 flex items-center gap-1 font-medium text-slate-700 bg-slate-200 h-5"
+            style="width: 70px"
+          ></div>
         </div>
       </section>
 
@@ -230,12 +247,21 @@
                     :map_sequence="map_sequence"
                     :map_label="map_label"
                   />
-                  <div
+                  <ul
                     v-if="flow.is_preview && loading"
-                    class="flex justify-center items-center"
+                    class="p-2 rounded-md bg-blue-50 text-xs flex flex-col gap-1"
                   >
-                    <LoadingIcon class="w-6 h-6" />
-                  </div>
+                    <li v-for="i in 3" class="flex flex-col gap-1">
+                      <div
+                        class="h-4 bg-slate-300 rounded animate-pulse"
+                        :style="`width: ${60 + i * 10}%`"
+                      ></div>
+                      <div
+                        class="h-12 bg-slate-200 rounded animate-pulse ml-3"
+                        :style="`width: ${70 + i * 5}%`"
+                      ></div>
+                    </li>
+                  </ul>
                 </div>
               </template>
               <template #button>
@@ -243,7 +269,7 @@
                   v-if="flow.status === 'DONE'"
                   class="rounded h-fit bg-blue-200 text-blue-700 flex gap-1 p-2 items-center"
                 >
-                  {{ $t('Đã gửi') }}
+                  {{ $t("Đã gửi") }}
                   <CheckCircleIcon class="w-4 h-4 flex-shrink-0" />
                 </p>
                 <button
@@ -251,7 +277,7 @@
                   v-else
                   @click="openModalSendFlow(flow)"
                 >
-                  {{ $t('Gửi') }}
+                  {{ $t("Gửi") }}
                   <LoadingIcon
                     v-if="flow.status === 'PROCESS'"
                     class="size-4"
@@ -284,9 +310,9 @@
         @update:model-value="searchFlow"
         @update:page-size="
           (value) => {
-            current_page = 1
-            page_size = value
-            searchFlow()
+            current_page = 1;
+            page_size = value;
+            searchFlow();
           }
         "
       />
@@ -303,10 +329,10 @@
     @close_modal="closeModalRemoveSequence"
   >
     <template #header>
-      {{ $t('Xác nhận dừng chuỗi') }}
+      {{ $t("Xác nhận dừng chuỗi") }}
     </template>
     <template #body>
-      {{ $t('Xác nhận dừng chuỗi') }}
+      {{ $t("Xác nhận dừng chuỗi") }}
       <span class="font-semibold">
         "{{ selected_sequence?.sequence?.sequence_name }}"
       </span>
@@ -316,13 +342,13 @@
         class="text-slate-500 py-2 px-4 bg-slate-100 rounded-md"
         @click="closeModalRemoveSequence"
       >
-        {{ $t('Huỷ') }}
+        {{ $t("Huỷ") }}
       </button>
       <button
         class="text-red-500 py-2 px-4 bg-red-100 rounded-md"
         @click="removeSequence"
       >
-        {{ $t('Dừng') }}
+        {{ $t("Dừng") }}
       </button>
     </template>
   </Modal>
@@ -337,10 +363,10 @@
     @close_modal="closeModalSendFlow"
   >
     <template #header>
-      {{ $t('Xác nhận gửi kịch bản') }}
+      {{ $t("Xác nhận gửi kịch bản") }}
     </template>
     <template #body>
-      {{ $t('Xác nhận gửi kịch bản') }}
+      {{ $t("Xác nhận gửi kịch bản") }}
       <span class="font-semibold"> "{{ selected_flow?.flow_name }}" </span>
     </template>
     <template #footer>
@@ -348,13 +374,13 @@
         class="text-slate-500 py-2 px-4 bg-slate-100 rounded-md"
         @click="closeModalSendFlow"
       >
-        {{ $t('Huỷ') }}
+        {{ $t("Huỷ") }}
       </button>
       <button
         class="rounded h-fit bg-blue-700 flex gap-1 p-2 text-white items-center"
         @click="sendFlow(selected_flow)"
       >
-        {{ $t('Gửi') }}
+        {{ $t("Gửi") }}
         <PaperAirplaneIcon class="size-4" />
       </button>
     </template>
@@ -369,31 +395,31 @@ import {
   read_tag,
   remove_sequence,
   send_flow,
-} from '@/service/api/chatbot'
-import { flow } from '@/service/helper/async'
-import { formatDateAgo } from '@/service/helper/format'
-import { useCommonStore } from '@/stores'
-import { format, hoursToMilliseconds } from 'date-fns'
-import { debounce, keyBy } from 'lodash'
-import { nextTick, ref, watch } from 'vue'
+} from "@/service/api/chatbot";
+import { flow } from "@/service/helper/async";
+import { formatDateAgo } from "@/service/helper/format";
+import { useCommonStore } from "@/stores";
+import { format, hoursToMilliseconds } from "date-fns";
+import { debounce, keyBy } from "lodash";
+import { nextTick, ref, watch } from "vue";
 
-import ClientAvatar from '@/components/Avatar/ClientAvatar.vue'
-import FlowItem from '@/components/FlowItem.vue'
-import Modal from '@/components/Modal.vue'
-import Pagnigation from '@/components/Pagnigation.vue'
-import PreviewFlow from '@/components/PreviewFlow.vue'
-import { CountHiddenItem } from '@/service/helper/CountHiddenItem'
+import ClientAvatar from "@/components/Avatar/ClientAvatar.vue";
+import FlowItem from "@/components/FlowItem.vue";
+import Modal from "@/components/Modal.vue";
+import Pagnigation from "@/components/Pagnigation.vue";
+import PreviewFlow from "@/components/PreviewFlow.vue";
+import { CountHiddenItem } from "@/service/helper/CountHiddenItem";
 
-import CheckCircleIcon from '@/components/Icons/CheckCircleIcon.vue'
-import ChevronDoubleRightIcon from '@/components/Icons/ChevronDoubleRightIcon.vue'
-import ChevronDownIcon from '@/components/Icons/ChevronDownIcon.vue'
-import ClockIcon from '@/components/Icons/ClockIcon.vue'
-import ListBulletIcon from '@/components/Icons/ListBulletIcon.vue'
-import LoadingIcon from '@/components/Icons/LoadingIcon.vue'
-import PaperAirplaneIcon from '@/components/Icons/PaperAirplaneIcon.vue'
-import PauseCircleIcon from '@/components/Icons/PauseCircleIcon.vue'
-import SearchIcon from '@/components/Icons/SearchIcon.vue'
-import StartIcon from '@/components/Icons/StartIcon.vue'
+import CheckCircleIcon from "@/components/Icons/CheckCircleIcon.vue";
+import ChevronDoubleRightIcon from "@/components/Icons/ChevronDoubleRightIcon.vue";
+import ChevronDownIcon from "@/components/Icons/ChevronDownIcon.vue";
+import ClockIcon from "@/components/Icons/ClockIcon.vue";
+import ListBulletIcon from "@/components/Icons/ListBulletIcon.vue";
+import LoadingIcon from "@/components/Icons/LoadingIcon.vue";
+import PaperAirplaneIcon from "@/components/Icons/PaperAirplaneIcon.vue";
+import PauseCircleIcon from "@/components/Icons/PauseCircleIcon.vue";
+import SearchIcon from "@/components/Icons/SearchIcon.vue";
+import StartIcon from "@/components/Icons/StartIcon.vue";
 
 import type {
   CbError,
@@ -402,59 +428,60 @@ import type {
   MappingClientSequenceInfo,
   Sequence,
   TagInfo,
-} from '@/service/interface'
+} from "@/service/interface";
 
-const $count_hidden_item = new CountHiddenItem()
+const $count_hidden_item = new CountHiddenItem();
 
-const commonStore = useCommonStore()
+const commonStore = useCommonStore();
 
 /** trang hiện tại */
-const current_page = ref(1)
+const current_page = ref(1);
 /** số bản ghi trên 1 trang */
-const page_size = ref(10)
+const page_size = ref(10);
 /**tìm kiếm kịch bản */
-const search = ref('')
+const search = ref("");
 /**id page hiện tại */
-const current_page_id = ref()
+const current_page_id = ref();
 /**danh sách kịch bản */
-const list_flow = ref<FlowInfo[]>([])
+const list_flow = ref<FlowInfo[]>([]);
 /**có quá 24h không */
-const is_over_time = ref(false)
+const is_over_time = ref(false);
 /** ánh xạ id:dữ liệu của các chuỗi */
-const map_sequence = ref<{ [key: string]: Sequence }>({})
+const map_sequence = ref<{ [key: string]: Sequence }>({});
 /** ánh xạ id:dữ liệu của các nhãm */
-const map_label = ref<{ [key: string]: Label }>({})
+const map_label = ref<{ [key: string]: Label }>({});
 /** danh sách các chuỗi sự kiện sắp tới */
-const list_sequence_by_client = ref<MappingClientSequenceInfo[]>([])
+const list_sequence_by_client = ref<MappingClientSequenceInfo[]>([]);
 /** loading dữ liệu kịch bản */
-const loading = ref(false)
+const loading = ref(false);
 /** đóng/mở modal xác nhận dừng chuỗi */
-const is_open_modal_remove_sequence = ref(false)
+const is_open_modal_remove_sequence = ref(false);
 /** dữ liệu của 1 chuỗi được chọn */
-const selected_sequence = ref<MappingClientSequenceInfo | null>(null)
+const selected_sequence = ref<MappingClientSequenceInfo | null>(null);
 /** đóng/mở modal xác nhận gửi kịch bản */
-const is_open_modal_send_flow = ref(false)
+const is_open_modal_send_flow = ref(false);
 /** dữ liệu của 1 kịch bản được chọn */
-const selected_flow = ref<FlowInfo | null>(null)
+const selected_flow = ref<FlowInfo | null>(null);
 /** danh sách thẻ */
-const list_tag = ref<TagInfo[]>([])
+const list_tag = ref<TagInfo[]>([]);
 /** số lượng thẻ bị ẩn */
-const hidden_tag_count = ref()
+const hidden_tag_count = ref();
 /** xem tất cả các thẻ */
-const is_expand_tag = ref(false)
+const is_expand_tag = ref(false);
 /** danh sách tag được chọn */
-const selected_tag_id = ref<string[]>([])
-
+const selected_tag_id = ref<string[]>([]);
+/** loading dữ liệu thẻ */
+const loading_tag = ref(false);
 
 // khi thay đổi conversation_info thì tìm kiếm lại kịch bản
 watch(
   () => commonStore.conversation_info,
   () => {
     // kiểm tra xem có quá 24h không
-    checkOverTime()
-    
+    checkOverTime();
+
     // lấy danh sách chuỗi sự kiện sắp gửi của khách hàng
-    readSequenceByClient()
+    readSequenceByClient();
 
     // nếu vẫn là page cũ thì thôi
     if (
@@ -462,69 +489,71 @@ watch(
       commonStore.conversation_info?.public_profile?.fb_page_id ===
         current_page_id.value
     )
-      return
+      return;
 
     // lưu lại id page hiện tại mới
     current_page_id.value =
-      commonStore.conversation_info?.public_profile?.fb_page_id
+      commonStore.conversation_info?.public_profile?.fb_page_id;
 
     // tìm kiếm lại kịch bản
-    searchFlow()
+    searchFlow();
 
     // lấy danh sách chuỗi
-    readSequence()
+    readSequence();
 
     // lấy danh sách nhãn
-    readLabel()
+    readLabel();
 
     // lấy danh sách thẻ
-    readTag()
+    readTag();
   }
-)
+);
 // lắng nghe tìm kiếm kịch bản
 watch(
   () => search.value,
   debounce(() => {
-    current_page.value = 1
-    searchFlow()
+    current_page.value = 1;
+    searchFlow();
   }, 300)
-)
+);
 
 /**tính xem có quá 24h không */
 function checkOverTime() {
-	// nếu không phải fb thì thôi
-	if (
-		commonStore.conversation_info?.conversation_message?.platform_type !== 
-		'FB_MESS'
-	) return
+  // nếu không phải fb thì thôi
+  if (
+    commonStore.conversation_info?.conversation_message?.platform_type !==
+    "FB_MESS"
+  )
+    return;
 
-    /**mốc thời gian hiện tại */
-    const NOW = Date.now()
-    /**thời gian tin nhắn cuối cùng được gửi */
-    const LAST_MESS_TIME = commonStore.conversation_info?.conversation_message?.last_message_time || 0
-    /**khoảng thời gian */
-    const DURATION = NOW - LAST_MESS_TIME
-    /**24 giờ */
-    const HOUR_24 = 1000 * 60 * 60 * 24
+  /**mốc thời gian hiện tại */
+  const NOW = Date.now();
+  /**thời gian tin nhắn cuối cùng được gửi */
+  const LAST_MESS_TIME =
+    commonStore.conversation_info?.conversation_message?.last_message_time || 0;
+  /**khoảng thời gian */
+  const DURATION = NOW - LAST_MESS_TIME;
+  /**24 giờ */
+  const HOUR_24 = 1000 * 60 * 60 * 24;
 
   if (DURATION > HOUR_24) {
     // gắn cờ quá 24h
-    is_over_time.value = true
+    is_over_time.value = true;
 
     // dừng tiến trình
-    return
+    return;
   }
 
   // bỏ gắn cờ quá 24h
-  is_over_time.value = false
+  is_over_time.value = false;
 }
 /**tìm kiếm danh sách kịch bản */
 function searchFlow() {
   // bật loading
-  loading.value = true
+  loading.value = true;
 
   // xoa danh sách kịch bản
-  list_flow.value = []
+  list_flow.value = [];
   flow(
     [
       // * đọc danh sách kịch bản
@@ -534,43 +563,45 @@ function searchFlow() {
             search: search.value,
             limit: page_size.value,
             skip: (current_page.value - 1) * page_size.value,
-            select: '',
-            flow_list_tag_id: selected_tag_id.value?.length ? selected_tag_id.value : undefined,
+            select: "",
+            flow_list_tag_id: selected_tag_id.value?.length
+              ? selected_tag_id.value
+              : undefined,
           },
           (e, r) => {
             // tắt loading
-            loading.value = false
+            loading.value = false;
 
             // nếu có lỗi thì thôi
-            if (e) return cb(e)
+            if (e) return cb(e);
 
             // gán danh sách kịch bản
-            if (r) list_flow.value = r
-            cb()
+            if (r) list_flow.value = r;
+            cb();
           }
         ),
     ],
     undefined,
     false
-  )
+  );
 }
 /**gửi kịch bản cho khách hàng */
 function sendFlow(flow: FlowInfo | null) {
   // nếu không có kịch bản thì thôi
-  if (!flow) return
+  if (!flow) return;
 
   /**
    * lấy id của client hiện tại
    * - tránh lỗi đang chạy thì client_id bị đổi do người dùng chọn khách hàng
    * khác
    */
-  const CLIENT_ID = commonStore.conversation_info?.public_profile?.fb_client_id
+  const CLIENT_ID = commonStore.conversation_info?.public_profile?.fb_client_id;
 
   // chặn khi không có id hoặc đang xử lý
-  if (!flow.flow_id || flow.status) return
+  if (!flow.flow_id || flow.status) return;
 
   // đánh dấu đang xử lý
-  flow.status = 'PROCESS'
+  flow.status = "PROCESS";
 
   // gửi kịch bản
   send_flow(
@@ -580,40 +611,40 @@ function sendFlow(flow: FlowInfo | null) {
     },
     (e, r) => {
       // đánh dấu xử lý xong
-      flow.status = 'DONE'
+      flow.status = "DONE";
 
       // sau 2s thì ẩn đi
-      setTimeout(() => (flow.status = undefined), 2000)
+      setTimeout(() => (flow.status = undefined), 2000);
 
       // lấy lại danh sách mới
       // readSequenceByClient()
 
       // đóng modal
-      closeModalSendFlow()
+      closeModalSendFlow();
     }
-  )
+  );
 }
 
 /** xem trước kịch bản */
 function previewFlow(data: FlowInfo) {
   // bật loading
-  loading.value = true
+  loading.value = true;
   flow([
     // * Hiển thị thông tin
     (cb: CbError) => {
       /** trạng thái xem trước hiện tại */
-      const CURRENT_IS_PREVIEW = data.is_preview
+      const CURRENT_IS_PREVIEW = data.is_preview;
 
       //tắt các preview của kịch bản
-      list_flow.value.forEach((flow) => (flow.is_preview = false))
+      list_flow.value.forEach((flow) => (flow.is_preview = false));
 
       // nếu đang bật và muốn tắt đi thì thôi không call api nữa
-      if (CURRENT_IS_PREVIEW) return
+      if (CURRENT_IS_PREVIEW) return;
 
       // bật preview của kịch bản này
-      data.is_preview = !CURRENT_IS_PREVIEW
+      data.is_preview = !CURRENT_IS_PREVIEW;
 
-      cb()
+      cb();
     },
 
     // * đọc dữ liệu kịch bản cần xem trước
@@ -621,45 +652,45 @@ function previewFlow(data: FlowInfo) {
       read_flow(
         {
           flow_id: data.flow_id,
-          select: '',
+          select: "",
         },
         (e, r) => {
           // tắt loading
-          loading.value = false
+          loading.value = false;
 
           // nếu xảy ra lỗi
-          if (e) return cb(e)
+          if (e) return cb(e);
 
           // nếu không có dữ liệu các hành động
-          if (!r?.[0]?.flow_list_action) return cb()
+          if (!r?.[0]?.flow_list_action) return cb();
 
           // lưu lại dữ liệu các hành động
-          data.flow_list_action = r?.[0]?.flow_list_action
-          cb()
+          data.flow_list_action = r?.[0]?.flow_list_action;
+          cb();
         }
       ),
-  ])
+  ]);
 }
 
 /** xem trước chuỗi */
 function previewSequence(data: MappingClientSequenceInfo) {
   // nếu đang mở thì xem trước
   if (data.is_preview) {
-    data.is_preview = false
-    return
+    data.is_preview = false;
+    return;
   }
 
   // tắt tất cả các chuỗi khác đang xem trước
   list_sequence_by_client.value.forEach((sequence) => {
     // tắt các preview của các chuỗi khác
     if (sequence._id !== data._id) {
-      sequence.is_preview = false
+      sequence.is_preview = false;
     }
     // bật preview của chuỗi được chọn
     else {
-      sequence.is_preview = true
+      sequence.is_preview = true;
     }
-  })
+  });
 }
 
 /** lấy danh sách chuỗi */
@@ -669,20 +700,20 @@ function readSequence() {
     (cb: CbError) =>
       read_sequence(
         {
-          select: 'sequence_id sequence_name',
+          select: "sequence_id sequence_name",
         },
         (e, r) => {
           // nếu có lỗi thì thôi
-          if (e) return cb(e)
+          if (e) return cb(e);
 
           // nếu không có dữ liệu thì thôi
-          if (!r || !r.length) return
+          if (!r || !r.length) return;
 
           // lưu lặp dữ liệu
-          map_sequence.value = keyBy(r, 'sequence_id')
+          map_sequence.value = keyBy(r, "sequence_id");
         }
       ),
-  ])
+  ]);
 }
 
 /** lấy các chuỗi sự kiện sắp gửi của khách hàng đó */
@@ -692,10 +723,10 @@ function readSequenceByClient(callback?: Function) {
    * - tránh lỗi đang chạy thì client_id bị đổi do người dùng chọn khách hàng
    * khác
    */
-  const CLIENT_ID = commonStore.conversation_info?.public_profile?.fb_client_id
+  const CLIENT_ID = commonStore.conversation_info?.public_profile?.fb_client_id;
 
   /** lấy id của page hiện tại */
-  const PAGE_ID = commonStore.conversation_info?.public_profile?.fb_page_id
+  const PAGE_ID = commonStore.conversation_info?.public_profile?.fb_page_id;
 
   flow([
     // * đọc danh sách chuỗi
@@ -706,18 +737,18 @@ function readSequenceByClient(callback?: Function) {
           page_id: PAGE_ID,
           skip: 0,
           client_id: CLIENT_ID,
-          select: '',
+          select: "",
         },
         (e, r) => {
-          callback?.()
+          callback?.();
 
           // nếu có lỗi thì thôi
-          if (e) return cb(e)
+          if (e) return cb(e);
 
-          list_sequence_by_client.value = r
+          list_sequence_by_client.value = r;
         }
       ),
-  ])
+  ]);
 }
 
 /** lấy danh sách nhãn */
@@ -727,75 +758,81 @@ function readLabel() {
     (cb: CbError) =>
       read_all_label({}, (e, r) => {
         // nếu có lỗi thì thôi
-        if (e) return cb(e)
+        if (e) return cb(e);
 
         // nếu không có dữ liệu thì thôi
-        if (!r) return
+        if (!r) return;
 
         // lưu lặp dữ liệu
-        map_label.value = r
+        map_label.value = r;
       }),
-  ])
+  ]);
 }
 
 /** lấy danh sách thẻ */
 function readTag() {
+  // bật loading
+  loading_tag.value = true;
+
   read_tag(
     {
       page_id: commonStore.conversation_info?.public_profile?.fb_page_id,
     },
     (e, r) => {
+      // tắt loading
+      loading_tag.value = false;
+
       // nếu có lỗi thì thôi
-      if (e) return console.error(e)
+      if (e) return console.error(e);
 
       // nếu không có dữ liệu thì thôi
-      if (!r) return
+      if (!r) return;
 
       // lưu lặp dữ liệu
-      list_tag.value = r
+      list_tag.value = r;
 
       nextTick(async () => {
         /** phần tử chứa danh sách thẻ */
-        const LIST_TAG = document.querySelector('#list-tag')
+        const LIST_TAG = document.querySelector("#list-tag");
 
         // nếu không có thì thôi
-        if (!LIST_TAG) return
+        if (!LIST_TAG) return;
 
         // tính toán các phần tử bị ẩn
         hidden_tag_count.value = await $count_hidden_item.exec(
-          '#item-tag',
+          "#item-tag",
           LIST_TAG
-        )
-      })
+        );
+      });
     }
-  )
+  );
 }
 
 /** hàm mở modal xác nhận dừng chuỗi */
 function openModalRemoveSequence(sequence: MappingClientSequenceInfo) {
   // bật modal
-  is_open_modal_remove_sequence.value = true
+  is_open_modal_remove_sequence.value = true;
 
   // lưu lặp dữ liệu
-  selected_sequence.value = sequence
+  selected_sequence.value = sequence;
 }
 
 /** hàm đóng modal xác nhận dừng chuỗi */
 function closeModalRemoveSequence() {
   // đóng modal
-  is_open_modal_remove_sequence.value = false
+  is_open_modal_remove_sequence.value = false;
 
   // xóa dữ liệu chuỗi
-  selected_sequence.value = null
+  selected_sequence.value = null;
 }
 
 /** hàm dừng chuỗi */
 function removeSequence() {
   /** lấy id của client hiện tại */
-  const CLIENT_ID = commonStore.conversation_info?.public_profile?.fb_client_id
+  const CLIENT_ID = commonStore.conversation_info?.public_profile?.fb_client_id;
 
   /** lấy id của page hiện tại */
-  const PAGE_ID = commonStore.conversation_info?.public_profile?.fb_page_id
+  const PAGE_ID = commonStore.conversation_info?.public_profile?.fb_page_id;
 
   flow(
     [
@@ -809,56 +846,56 @@ function removeSequence() {
             mapping_client_sequence_id: selected_sequence.value?._id,
           },
           (e, r) => {
-            if (e) return cb(e)
+            if (e) return cb(e);
             // nếu thành công thì tắt modal và xóa khỏi mảng
-            if (r.code !== 200) return cb()
+            if (r.code !== 200) return cb();
 
             // đóng modal
-            closeModalRemoveSequence()
+            closeModalRemoveSequence();
 
             // lấy lại danh sách mới
-            readSequenceByClient(cb)
+            readSequenceByClient(cb);
           }
         ),
     ],
     undefined,
     true
-  )
+  );
 }
 
 /** hàm mở modal xác nhận gửi kịch bản */
 function openModalSendFlow(flow: FlowInfo) {
   // bật modal
-  is_open_modal_send_flow.value = true
+  is_open_modal_send_flow.value = true;
 
   // lưu lặp dữ liệu
-  selected_flow.value = flow
+  selected_flow.value = flow;
 }
 
 /** hàm đóng modal xác nhận gửi kịch bản */
 function closeModalSendFlow() {
   // đóng modal
-  is_open_modal_send_flow.value = false
+  is_open_modal_send_flow.value = false;
 
   // xóa dữ liệu kịch bản
-  selected_flow.value = null
+  selected_flow.value = null;
 }
 
 /** hàm chọn thẻ */
 function selectTag(tag: TagInfo) {
   /** index của thẻ đã chọn trong mảng đã chọn */
-  const INDEX = selected_tag_id.value.findIndex((item) => item === tag.tag_id)
+  const INDEX = selected_tag_id.value.findIndex((item) => item === tag.tag_id);
   // nếu không có thì thêm vào mảng
-  if(INDEX === -1 && tag.tag_id) {
-    selected_tag_id.value = [...selected_tag_id.value, tag.tag_id]
-  } 
+  if (INDEX === -1 && tag.tag_id) {
+    selected_tag_id.value = [...selected_tag_id.value, tag.tag_id];
+  }
   // nếu có trong mảng rồi thì xóa
   else {
-    selected_tag_id.value.splice(INDEX, 1)
+    selected_tag_id.value.splice(INDEX, 1);
   }
 
-  current_page.value = 1
-  searchFlow()
+  current_page.value = 1;
+  searchFlow();
 }
 </script>
 <style scoped lang="scss"></style>
