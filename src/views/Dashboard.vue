@@ -190,14 +190,10 @@
         </div>
         <div v-if="loading_tag" class="flex gap-2 pt-2 items-center">
           <ul class="flex flex-grow min-w-0 gap-1 flex-wrap">
-            <li
-              class="h-5 bg-slate-200 rounded-md animate-pulse"
-              style="width: 300px"
-            ></li>
+            <li class="h-5 bg-slate-200 rounded-md animate-pulse w-full"></li>
           </ul>
           <div
-            class="flex-shrink-0 flex items-center gap-1 font-medium text-slate-700 bg-slate-200 h-5"
-            style="width: 70px"
+            class="flex-shrink-0 flex items-center gap-1 font-medium text-slate-700 bg-slate-200 h-5 w-1/5"
           ></div>
         </div>
       </section>
