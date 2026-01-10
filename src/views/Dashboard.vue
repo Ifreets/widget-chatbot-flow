@@ -134,7 +134,11 @@
               class="absolute inset-y-0 end-0.5 flex items-center pointer-events-none"
             >
               <ClientAvatar
-                class="rounded-full"
+                :public_profile="commonStore.conversation_info?.public_profile"
+                :platform_type="
+                  commonStore.conversation_info?.conversation_message
+                    ?.platform_type
+                "
                 :client_id="
                   commonStore.conversation_info?.public_profile?.fb_client_id
                 "

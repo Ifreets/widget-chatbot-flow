@@ -5,56 +5,56 @@ $color-thumb-active: rgba(114, 23, 189, 0.2470588235);
 
 // custom lại scrolbar chiều ngang
 .scrollbar-horizontal {
-    // Ẩn scroll bar mặc định
-    &::-webkit-scrollbar {
-        // Độ rộng của scroll bar
-        height: 6px; 
-        // Màu nền của track
-        background: transparent;
-    }
+  // Ẩn scroll bar mặc định
+  &::-webkit-scrollbar {
+    // Độ rộng của scroll bar
+    height: 6px;
+    // Màu nền của track
+    background: transparent;
+  }
 
-    &::-webkit-scrollbar-track {
-        // Bo góc
-        border-radius: 6px; 
-    }
+  &::-webkit-scrollbar-track {
+    // Bo góc
+    border-radius: 6px;
+  }
 
-    &::-webkit-scrollbar-thumb {
-        // Màu của thumb
-        background-color: $color-thumb; 
-        // Bo góc
-        border-radius: 6px; 
-    }
+  &::-webkit-scrollbar-thumb {
+    // Màu của thumb
+    background-color: $color-thumb;
+    // Bo góc
+    border-radius: 6px;
+  }
 
-    &::-webkit-scrollbar-thumb:active {
-        // Màu khi kéo thumb
-        background-color: $color-thumb-active;
-    }
+  &::-webkit-scrollbar-thumb:active {
+    // Màu khi kéo thumb
+    background-color: $color-thumb-active;
+  }
 }
 
 // custom lại scrollbar chiều dọc
 .scrollbar-vertical {
-    // Ẩn scroll bar mặc định
-    &::-webkit-scrollbar {
-        // Độ rộng của scroll bar
-        width: 6px; 
-        // Màu nền của track
-        background: transparent;
-    }
+  // Ẩn scroll bar mặc định
+  &::-webkit-scrollbar {
+    // Độ rộng của scroll bar
+    width: 6px;
+    // Màu nền của track
+    background: transparent;
+  }
 
-    &::-webkit-scrollbar-track {
-        // Bo góc
-        border-radius: 6px; 
-    }
+  &::-webkit-scrollbar-track {
+    // Bo góc
+    border-radius: 6px;
+  }
 
-    &::-webkit-scrollbar-thumb {
-        // Màu của thumb
-        background-color: $color-thumb; 
-        // Bo góc
-        border-radius: 6px; 
-    }
+  &::-webkit-scrollbar-thumb {
+    // Màu của thumb
+    background-color: $color-thumb;
+    // Bo góc
+    border-radius: 6px;
+  }
 
-    &::-webkit-scrollbar-thumb:active {
-        // Màu khi kéo thumb
-        background-color: $color-thumb-active; 
-    }
+  &::-webkit-scrollbar-thumb:active {
+    // Màu khi kéo thumb
+    background-color: $color-thumb-active;
+  }
 }

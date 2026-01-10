@@ -51,3 +51,13 @@ export function formatDateAgo(date?: string|number) {
         }
     )
 }
+
+/**cắt ra 2 ký tự đầu và cuối trong tên */
+export const nameToLetter = (name: string) => {
+    return nonAccentVn(name)
+        .match(/(\b\S)?/g)
+        ?.join('')
+        .match(/(^\S|\S$)?/g)
+        ?.join('')
+        .toUpperCase()
+}
