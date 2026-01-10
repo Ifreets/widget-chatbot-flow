@@ -113,7 +113,7 @@
 //* import function
 import { nameToLetter } from "@/service/helper/format";
 import { getCdnInstance } from "@/service/helper/Cdn";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 
 //* import type
 import type { CustomerInfo } from "bbh-chatbox-widget-js-sdk";
@@ -160,6 +160,45 @@ const actual_size = computed(() => {
 /** Thêm hiệu ứng ẩn hiện khi ảnh đang được load */
 const animate_pulse = ref("animate-pulse");
 
+/** Kiểm tra xem có đang hiển thị chữ cái không */
+const isShowingLetter = computed(() => {
+  // Nếu có avatar URL trực tiếp thì không phải chữ
+  if ($props.avatar) return false;
+
+  // Nếu là WEBSITE và có client_name thì hiển thị chữ
+  if (getPlatformType() === "WEBSITE" && $props.public_profile?.client_name) {
+    return true;
+  }
+
+  // Nếu không có client_id và page_id thì sẽ hiển thị chữ (fallback cuối cùng)
+  if (!$props.client_id && !$props.page_id) {
+    return true;
+  }
+
+  // Nếu không có platform_type và không có avatar URL thì sẽ hiển thị chữ
+  if (
+    !getPlatformType() &&
+    !getClientAvatar() &&
+    !$props.client_id &&
+    !$props.page_id
+  ) {
+    return true;
+  }
+
+  return false;
+});
+
+/** Tắt hiệu ứng khi hiển thị chữ cái */
+watch(
+  isShowingLetter,
+  (is_letter) => {
+    if (is_letter) {
+      removeAnimatePulse();
+    }
+  },
+  { immediate: true }
+);
+
 onMounted(() => {
   /** Tắt hiệu ứng với dạng web */
   if (getPlatformType() === "WEBSITE") removeAnimatePulse();
@@ -168,6 +207,10 @@ onMounted(() => {
     NO_AVT_PLATFORMS.some((p) => getPlatformType()?.includes(p)) &&
     !getClientAvatar()
   ) {
+    removeAnimatePulse();
+  }
+  /** Tắt hiệu ứng nếu đang hiển thị chữ cái */
+  if (isShowingLetter.value) {
     removeAnimatePulse();
   }
 });
