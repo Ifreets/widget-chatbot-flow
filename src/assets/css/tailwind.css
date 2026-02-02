@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/** =====================================================
+ * Fix scroll leak trên mobile khi nhúng iframe
+ * Ngăn scroll chain từ content ra parent page
+ * ===================================================== */
+html,
+body {
+  /** chiếm toàn bộ viewport */
+  height: 100%;
+  width: 100%;
+  /** ẩn scroll của html/body */
+  overflow: hidden;
+  /** ngăn scroll chain lan ra parent */
+  overscroll-behavior: none;
+  /** fixed position để không bị scroll */
+  position: fixed;
+  /** giữ vị trí góc trên bên trái */
+  top: 0;
+  left: 0;
+}
+
+/** container #app cũng cần fix */
+#app {
+  /** chiếm toàn bộ viewport */
+  height: 100%;
+  width: 100%;
+  /** ẩn scroll của #app */
+  overflow: hidden;
+}

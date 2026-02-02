@@ -1,7 +1,6 @@
 <template>
-  <main
-    class="flex justify-center items-start md:items-center w-full min-h-[100dvh] bg-slate-100 text-sm overflow-hidden"
-  >
+  <!-- class="flex justify-center items-start md:items-center w-full min-h-[100dvh] bg-slate-100 text-sm overflow-hidden" -->
+  <main class="h-screen w-screen bg-slate-200 overflow-hidden fixed inset-0">
     <div v-if="is_over_time" class="text-xs text-center mt-10 md:mt-0">
       <div>
         {{ $t("v1.view.dashboard.overtime") }}
@@ -16,7 +15,7 @@
     </div>
     <article
       v-else
-      class="bg-white w-full min-h-[100dvh] md:min-h-0 md:w-[400px] md:h-[300px] flex flex-col overflow-hidden"
+      class="bg-white w-full min-h-[100dvh] md:min-h-0 md:w-[400px] md:h-[300px] flex flex-col overflow-y-auto overscroll-contain container"
     >
       <!-- danh sách kịch bản đang gửi -->
       <section
@@ -896,4 +895,12 @@ function selectTag(tag: TagInfo) {
   searchFlow();
 }
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+/** fix scroll leak trên mobile iframe */
+.container {
+  /** ngăn scroll chain lan ra parent */
+  overscroll-behavior: contain;
+  /** tắt touch-action mặc định để kiểm soát hoàn toàn */
+  -webkit-overflow-scrolling: touch;
+}
+</style>

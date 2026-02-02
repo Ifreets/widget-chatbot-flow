@@ -50,11 +50,4 @@ async function getConversationInfo() {
 
 <style lang="scss">
 @import "@/assets/css/index.scss";
-/** fix scroll leak trên mobile iframe */
-.container {
-  /** ngăn scroll chain lan ra parent */
-  overscroll-behavior: contain;
-  /** tắt touch-action mặc định để kiểm soát hoàn toàn */
-  -webkit-overflow-scrolling: touch;
-}
 </style>
