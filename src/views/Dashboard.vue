@@ -16,7 +16,7 @@
     </div>
     <article
       v-else
-      class="bg-white w-full min-h-[100dvh] md:min-h-0 md:w-[400px] md:h-[300px] flex flex-col md:overflow-auto scrollbar-vertical"
+      class="bg-white w-full min-h-[100dvh] md:min-h-0 md:w-[400px] md:h-[300px] flex flex-col overflow-hidden"
     >
       <!-- danh sách kịch bản đang gửi -->
       <section
