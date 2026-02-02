@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen min-h-[100dvh] md:h-screen overflow-hidden bg-red-200">
+  <div class="w-full min-h-[100dvh] md:h-screen overflow-hidden bg-red-200">
     nnnnnnn
     <!-- <Network />
     <AdBlocker />
