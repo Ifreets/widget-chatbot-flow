@@ -1,5 +1,8 @@
 <template>
-  <div class="w-screen h-screen">
+  <!-- <div class="w-screen h-screen"> -->
+  <div
+    class="h-screen w-screen bg-slate-200 overflow-hidden fixed inset-0 container"
+  >
     <Network />
     <AdBlocker />
     <Loading v-if="commonStore.is_loading_full_screen" type="FULL" />
@@ -49,4 +52,11 @@ async function getConversationInfo() {
 
 <style lang="scss">
 @import "@/assets/css/index.scss";
+/** fix scroll leak trên mobile iframe */
+.container {
+  /** ngăn scroll chain lan ra parent */
+  overscroll-behavior: contain;
+  /** tắt touch-action mặc định để kiểm soát hoàn toàn */
+  -webkit-overflow-scrolling: touch;
+}
 </style>
