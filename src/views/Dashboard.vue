@@ -209,8 +209,10 @@
           <template v-for="flow of list_flow">
             <FlowItem
               container_class=""
-              position_sticky="top-[54px]"
-              :title_class="`border border-b-0 ${!flow.is_preview && 'pb-0'}`"
+              position_sticky="static"
+              :title_class="`border ${
+                flow.is_preview ? 'border-b-0' : 'rounded-b-lg map-hover-item'
+              } ${!flow.is_preview && 'pb-2'}`"
               :showContent="() => previewFlow(flow)"
             >
               <template #title>
@@ -236,20 +238,23 @@
                 <ChevronDownIcon
                   class="size-5 flex-shrink-0"
                   :class="{
-                    '-rotate-90': flow.is_preview,
+                    '-rotate-90': !flow.is_preview,
                   }"
                 />
               </template>
               <template #content>
-                <div class="pb-2 px-3 border border-t-transparent rounded-b-lg">
+                <div
+                  v-if="flow.is_preview"
+                  class="pb-2 px-3 border border-t-transparent rounded-b-lg"
+                >
                   <PreviewFlow
-                    v-if="flow.is_preview && !loading"
+                    v-if="!loading"
                     :flow_list_action="flow.flow_list_action"
                     :map_sequence="map_sequence"
                     :map_label="map_label"
                   />
                   <ul
-                    v-if="flow.is_preview && loading"
+                    v-if="loading"
                     class="p-2 rounded-md bg-blue-50 text-xs flex flex-col gap-1"
                   >
                     <li v-for="i in 3" class="flex flex-col gap-1">
