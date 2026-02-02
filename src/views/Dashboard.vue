@@ -1,8 +1,8 @@
 <template>
   <main
-    class="flex justify-center items-center w-screen h-screen bg-slate-100 text-sm"
+    class="flex justify-center items-start md:items-center w-full min-h-[100dvh] bg-slate-100 text-sm overflow-hidden"
   >
-    <div v-if="is_over_time" class="text-xs text-center">
+    <div v-if="is_over_time" class="text-xs text-center mt-10 md:mt-0">
       <div>
         {{ $t("v1.view.dashboard.overtime") }}
       </div>
@@ -16,7 +16,7 @@
     </div>
     <article
       v-else
-      class="bg-white w-screen h-screen md:w-[400px] md:h-[300px] flex flex-col overflow-auto scrollbar-vertical"
+      class="bg-white w-full min-h-[100dvh] md:min-h-0 md:w-[400px] md:h-[300px] flex flex-col overflow-hidden"
     >
       <!-- danh sách kịch bản đang gửi -->
       <section
@@ -168,10 +168,10 @@
               class="rounded-md py-0.5 px-2 cursor-pointer hover:brightness-90"
               :class="{
                 'bg-slate-700 text-white': selected_tag_id?.includes(
-                  tag.tag_id || ''
+                  tag.tag_id || '',
                 ),
                 'bg-slate-100 hover:brightness-90': !selected_tag_id?.includes(
-                  tag.tag_id || ''
+                  tag.tag_id || '',
                 ),
               }"
               @click="selectTag(tag)"
@@ -504,7 +504,7 @@ watch(
 
     // lấy danh sách thẻ
     readTag();
-  }
+  },
 );
 // lắng nghe tìm kiếm kịch bản
 watch(
@@ -512,7 +512,7 @@ watch(
   debounce(() => {
     current_page.value = 1;
     searchFlow();
-  }, 300)
+  }, 300),
 );
 
 /**tính xem có quá 24h không */
@@ -576,11 +576,11 @@ function searchFlow() {
             // gán danh sách kịch bản
             if (r) list_flow.value = r;
             cb();
-          }
+          },
         ),
     ],
     undefined,
-    false
+    false,
   );
 }
 /**gửi kịch bản cho khách hàng */
@@ -619,7 +619,7 @@ function sendFlow(flow: FlowInfo | null) {
 
       // đóng modal
       closeModalSendFlow();
-    }
+    },
   );
 }
 
@@ -665,7 +665,7 @@ function previewFlow(data: FlowInfo) {
           // lưu lại dữ liệu các hành động
           data.flow_list_action = r?.[0]?.flow_list_action;
           cb();
-        }
+        },
       ),
   ]);
 }
@@ -709,7 +709,7 @@ function readSequence() {
 
           // lưu lặp dữ liệu
           map_sequence.value = keyBy(r, "sequence_id");
-        }
+        },
       ),
   ]);
 }
@@ -744,7 +744,7 @@ function readSequenceByClient(callback?: Function) {
           if (e) return cb(e);
 
           list_sequence_by_client.value = r;
-        }
+        },
       ),
   ]);
 }
@@ -799,10 +799,10 @@ function readTag() {
         // tính toán các phần tử bị ẩn
         hidden_tag_count.value = await $count_hidden_item.exec(
           "#item-tag",
-          LIST_TAG
+          LIST_TAG,
         );
       });
-    }
+    },
   );
 }
 
@@ -853,11 +853,11 @@ function removeSequence() {
 
             // lấy lại danh sách mới
             readSequenceByClient(cb);
-          }
+          },
         ),
     ],
     undefined,
-    true
+    true,
   );
 }
 
