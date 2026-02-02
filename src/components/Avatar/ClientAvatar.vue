@@ -1,78 +1,110 @@
 <template>
+  <!-- Nếu có avatar URL trực tiếp -->
   <img
+    v-if="avatar"
     @error="onImageError"
     @load="removeAnimatePulse"
     loading="lazy"
-    v-if="avatar"
     :src="avatar"
-    :alt="$props.public_profile?.client_name || 'Avatar'"
-    class="w-full h-full overflow-hidden bg-slate-200 rounded-oval object-cover"
+    :alt="public_profile?.client_name || 'Avatar'"
+    :style="{
+      width: `${actual_size}px`,
+      height: `${actual_size}px`,
+      maxWidth: `${actual_size}px`,
+      maxHeight: `${actual_size}px`,
+      minWidth: `${actual_size}px`,
+      minHeight: `${actual_size}px`,
+    }"
+    class="overflow-hidden bg-slate-200 rounded-full object-cover flex-shrink-0"
   />
+  <!-- Hiển thị theo platform -->
   <div
     v-else
     :class="animate_pulse"
-    class="overflow-hidden bg-slate-200 rounded-oval object-cover"
+    :style="{
+      width: `${actual_size}px`,
+      height: `${actual_size}px`,
+      maxWidth: `${actual_size}px`,
+      maxHeight: `${actual_size}px`,
+      minWidth: `${actual_size}px`,
+      minHeight: `${actual_size}px`,
+    }"
+    class="overflow-hidden bg-slate-200 rounded-full flex-shrink-0"
   >
+    <!-- WEBSITE: Hiển thị chữ cái đầu -->
     <div
-      v-if="
-        $props.public_profile?.client_name && getPlatformType() === 'WEBSITE'
-      "
+      v-if="public_profile?.client_name && getPlatformType() === 'WEBSITE'"
       :style="{ background: letterToColorCode() }"
-      class="w-full h-full flex justify-center items-center font-semibold text-white rounded-oval"
+      class="w-full h-full flex justify-center items-center font-semibold text-white rounded-full"
     >
-      {{ nameToLetter($props.public_profile?.client_name || "") }}
+      {{ nameToLetter(public_profile?.client_name || "") }}
     </div>
+    <!-- FB_MESS: Avatar Facebook -->
     <img
       v-else-if="getPlatformType() === 'FB_MESS'"
       @error="onImageError"
       @load="removeAnimatePulse"
       loading="lazy"
       :src="loadImageUrl()"
-      :alt="$props.public_profile?.client_name || 'Avatar'"
-      class="w-full h-full rounded-oval object-cover"
+      :alt="public_profile?.client_name || 'Avatar'"
+      class="w-full h-full rounded-full object-cover block"
     />
+    <!-- FB_INSTAGRAM: Avatar Instagram -->
     <img
       v-else-if="getPlatformType() === 'FB_INSTAGRAM'"
       @error="onImageError"
       @load="removeAnimatePulse"
       loading="lazy"
       :src="loadImageUrl('FB_INSTAGRAM')"
-      :alt="$props.public_profile?.client_name || 'Avatar'"
-      class="w-full h-full rounded-oval object-cover"
+      :alt="public_profile?.client_name || 'Avatar'"
+      class="w-full h-full rounded-full object-cover block"
     />
+    <!-- TIKTOK: Avatar TikTok -->
     <img
       v-else-if="getPlatformType() === 'TIKTOK'"
       @error="onImageError"
       @load="removeAnimatePulse"
       loading="lazy"
       :src="loadImageUrl('TIKTOK')"
-      :alt="$props.public_profile?.client_name || 'Avatar'"
-      class="w-full h-full rounded-oval object-cover"
+      :alt="public_profile?.client_name || 'Avatar'"
+      class="w-full h-full rounded-full object-cover block"
     />
+    <!-- ZALO_OA: Avatar từ API -->
     <img
       v-else-if="getPlatformType() === 'ZALO_OA' && getClientAvatar()"
       @error="onImageError"
       @load="removeAnimatePulse"
       loading="lazy"
       :src="getClientAvatar()"
-      :alt="$props.public_profile?.client_name || 'Avatar'"
-      class="w-full h-full rounded-oval object-cover"
+      :alt="public_profile?.client_name || 'Avatar'"
+      class="w-full h-full rounded-full object-cover block"
     />
+    <!-- ZALO_PERSONAL: Avatar từ API -->
     <img
       v-else-if="getPlatformType() === 'ZALO_PERSONAL' && getClientAvatar()"
       @error="onImageError"
       @load="removeAnimatePulse"
       loading="lazy"
       :src="getClientAvatar()"
-      :alt="$props.public_profile?.client_name || 'Avatar'"
-      class="w-full h-full rounded-oval object-cover"
+      :alt="public_profile?.client_name || 'Avatar'"
+      class="w-full h-full rounded-full object-cover block"
     />
+    <!-- Fallback: Dùng cách cũ nếu có client_id, page_id -->
+    <img
+      v-else-if="client_id && page_id"
+      @error="onImageError"
+      @load="removeAnimatePulse"
+      loading="lazy"
+      :src="loadLegacyImageUrl()"
+      class="w-full h-full rounded-full object-cover block"
+    />
+    <!-- Fallback cuối cùng: Hiển thị chữ cái đầu -->
     <div
       v-else
       :style="{ background: letterToColorCode() }"
-      class="w-full h-full flex justify-center items-center font-semibold text-white rounded-oval"
+      class="w-full h-full flex justify-center items-center font-semibold text-white rounded-full"
     >
-      {{ nameToLetter($props.public_profile?.client_name || "") }}
+      {{ nameToLetter(public_profile?.client_name || "") }}
     </div>
   </div>
 </template>
@@ -251,11 +283,20 @@ function loadImageUrl(platform_type?: string) {
   return $cdn.fbClientAvt(PAGE_ID, CLIENT_ID) + PARAMS;
 }
 
+/** Tạo url ảnh theo cách cũ (backward compatibility) */
+function loadLegacyImageUrl() {
+  return `${$env.img_host}/${$props.client_id}?page_id=${
+    $props.page_id
+  }&staff_id=${$props.staff_id || ""}&width=${actual_size.value}&height=${
+    actual_size.value
+  }`;
+}
+
 /** Khi ảnh load thất bại thì thay thế ảnh mặc định vào */
 function onImageError($event: Event) {
-  const IMAGE = $event.target as HTMLImageElement;
+  const image = $event.target as HTMLImageElement;
 
-  IMAGE.src = `${$env.img_host}/1111111111?width=${
+  image.src = `${$env.img_host}/1111111111?width=${
     actual_size.value * 2
   }&height=${actual_size.value * 2}`;
 }
