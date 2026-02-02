@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen min-h-[100dvh] md:h-screen">
+  <div class="w-screen min-h-[100dvh] md:h-screen overflow-hidden">
     <Network />
     <AdBlocker />
     <Loading v-if="commonStore.is_loading_full_screen" type="FULL" />
