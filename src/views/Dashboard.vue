@@ -3,7 +3,7 @@
   <main
     class="flex w-full min-h-[100dvh] bg-slate-200 overflow-hidden fixed inset-0"
   >
-    <div v-if="is_over_time" class="text-xs text-center mt-10 md:mt-0">
+    <div v-if="is_over_time" class="text-xs text-center">
       <div>
         {{ $t("v1.view.dashboard.overtime") }}
       </div>
@@ -17,7 +17,7 @@
     </div>
     <article
       v-else
-      class="bg-white w-full min-h-[100dvh] md:min-h-0 md:w-[400px] md:h-[300px] flex flex-col overflow-y-auto container"
+      class="bg-white w-full min-h-[100dvh] md:min-h-0 md:w-[400px] md:h-[300px] flex flex-col"
     >
       <!-- danh sách kịch bản đang gửi -->
       <section
@@ -204,7 +204,7 @@
       </section>
 
       <!-- danh sách kịch bản -->
-      <section class="px-2 pb-1 flex-grow">
+      <section class="px-2 pb-1 flex-grow overflow-y-auto container">
         <ul class="flex flex-col gap-3">
           <template v-for="flow of list_flow">
             <FlowItem
