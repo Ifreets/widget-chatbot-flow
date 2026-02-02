@@ -1,13 +1,13 @@
 <template>
   <div class="w-screen min-h-[100dvh] md:h-screen overflow-hidden">
-    <Network />
+    <!-- <Network />
     <AdBlocker />
     <Loading v-if="commonStore.is_loading_full_screen" type="FULL" />
     <div
       class="h-full md:overflow-hidden md:scrollbar-vertical md:overflow-y-auto"
     >
       <router-view />
-    </div>
+    </div> -->
   </div>
 </template>
 
