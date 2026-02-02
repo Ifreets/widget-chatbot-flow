@@ -1,14 +1,10 @@
 <template>
   <!-- <div class="w-screen h-screen"> -->
-  <div
-    class="h-screen w-screen bg-slate-200 overflow-hidden fixed inset-0 container"
-  >
+  <div class="h-screen w-screen bg-slate-200 overflow-hidden fixed inset-0">
     <Network />
     <AdBlocker />
     <Loading v-if="commonStore.is_loading_full_screen" type="FULL" />
-    <div
-      class="h-full md:overflow-hidden md:scrollbar-vertical md:overflow-y-auto"
-    >
+    <div class="h-full container">
       <router-view />
     </div>
   </div>
