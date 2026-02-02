@@ -1,6 +1,6 @@
 <template>
   <main
-    class="flex justify-center items-start md:items-center w-full min-h-[100dvh] bg-slate-100 text-sm"
+    class="flex justify-center items-start md:items-center w-full min-h-[100dvh] bg-slate-100 text-sm overflow-hidden"
   >
     <div v-if="is_over_time" class="text-xs text-center mt-10 md:mt-0">
       <div>
