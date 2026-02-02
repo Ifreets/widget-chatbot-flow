@@ -1,8 +1,8 @@
 <template>
   <main
-    class="flex justify-center items-center w-screen h-screen bg-slate-100 text-sm"
+    class="flex justify-center items-start md:items-center w-full min-h-[100dvh] bg-slate-100 text-sm"
   >
-    <div v-if="is_over_time" class="text-xs text-center">
+    <div v-if="is_over_time" class="text-xs text-center mt-10 md:mt-0">
       <div>
         {{ $t("v1.view.dashboard.overtime") }}
       </div>
@@ -16,7 +16,7 @@
     </div>
     <article
       v-else
-      class="bg-white w-screen h-screen md:w-[400px] md:h-[300px] flex flex-col overflow-auto scrollbar-vertical"
+      class="bg-white w-full min-h-[100dvh] md:min-h-0 md:w-[400px] md:h-[300px] flex flex-col md:overflow-auto scrollbar-vertical"
     >
       <!-- danh sách kịch bản đang gửi -->
       <section
