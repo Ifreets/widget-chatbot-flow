@@ -203,7 +203,7 @@
       </section>
 
       <!-- danh sách kịch bản -->
-      <section class="px-2 pb-1 flex-grow overflow-hidden overflow-y-auto">
+      <section class="px-2 pb-1 flex-grow">
         <ul class="flex flex-col gap-3">
           <template v-for="flow of list_flow">
             <FlowItem
