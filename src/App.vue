@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="w-full min-h-[100dvh] md:h-screen overflow-hidden bg-red-200 scrollbar-hide"
-  >
+  <div class="w-full h-[400px] overflow-hidden bg-red-200">
     nnnnnnn
     <!-- <Network />
     <AdBlocker />
