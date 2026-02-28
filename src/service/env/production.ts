@@ -17,6 +17,7 @@ const ENV: Env = {
     chatbot_v3: "https://chatbox-service-v3.botbanhang.vn",
   },
   img_host: "https://chatbox-static-v3.botbanhang.vn/app/facebook/avatar",
+  VITE_MEDIA_CDN: "https://cdn.botbanhang.vn",
 };
 
 export default ENV;

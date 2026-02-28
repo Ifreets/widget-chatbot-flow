@@ -131,26 +131,19 @@
                 })
               "
             />
+            <!-- <div
+              class="absolute inset-y-0 end-0.5 flex items-center pointer-events-none w-5 h-5 rounded-full overflow-hidden"
+            > -->
             <div
-              class="absolute inset-y-0 end-0.5 flex items-center pointer-events-none"
+              class="w-6 h-6 absolute top-[3px] right-[3px] rounded-full overflow-hidden"
             >
               <ClientAvatar
                 :public_profile="commonStore.conversation_info?.public_profile"
                 :platform_type="
-                  commonStore.conversation_info?.conversation_message
+                  (commonStore.conversation_info as any)?.conversation_message
                     ?.platform_type
                 "
-                :client_id="
-                  commonStore.conversation_info?.public_profile?.fb_client_id
-                "
-                :page_id="
-                  commonStore.conversation_info?.public_profile?.fb_page_id
-                "
-                :staff_id="
-                  commonStore.conversation_info?.public_profile
-                    ?.current_staff_id
-                "
-                size="24"
+                :actual_size="12"
               />
             </div>
           </div>
@@ -407,7 +400,6 @@ import { format, hoursToMilliseconds } from "date-fns";
 import { debounce, keyBy } from "lodash";
 import { nextTick, ref, watch } from "vue";
 
-import ClientAvatar from "@/components/Avatar/ClientAvatar.vue";
 import FlowItem from "@/components/FlowItem.vue";
 import Modal from "@/components/Modal.vue";
 import Pagnigation from "@/components/Pagnigation.vue";
@@ -433,6 +425,7 @@ import type {
   Sequence,
   TagInfo,
 } from "@/service/interface";
+import ClientAvatar from "@/components/Avatar/ClientAvatar.vue";
 
 const $count_hidden_item = new CountHiddenItem();
 
